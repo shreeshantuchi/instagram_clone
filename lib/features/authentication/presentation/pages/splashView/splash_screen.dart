@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_token_app/core/widget/nav_bar_screen.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:login_token_app/features/authentication/presentation/pages/homeView/home_view.dart';
@@ -51,9 +52,9 @@ class _SplashScreenState extends State<SplashScreen> {
           case OnAuthLoadingState():
             return const LoadingIndicator(text: "Loading");
           case OnLogInAuthenticatedState():
-            return const MyHomePage(title: "Log In Authentication");
+            return const NavBarScreen();
           case OnAppStartLogInAuthenticatedState():
-            return const MyHomePage(title: "app restart Authentication");
+            return const NavBarScreen();
           case OnLoginFailureState():
             return const LoginView();
           case OnLogInUnAuthenticactedState():
