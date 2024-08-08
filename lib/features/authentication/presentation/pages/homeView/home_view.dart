@@ -7,9 +7,9 @@ import 'package:login_token_app/features/authentication/presentation/pages/splas
 import 'package:login_token_app/core/services/ApiService/api_service.dart';
 import 'package:login_token_app/core/services/sharedPreference/shared_preference_service.dart';
 import 'package:login_token_app/core/widget/custom_button.dart';
-import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_bloc.dart';
-import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_event.dart';
-import 'package:login_token_app/features/userManagement/presentation/bloc/user_management_state.dart';
+import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
+import 'package:login_token_app/features/userManagement/bloc/user_maanagement_event.dart';
+import 'package:login_token_app/features/userManagement/bloc/user_management_state.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
