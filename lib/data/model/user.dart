@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 class AuthTokenModel {
   final String access_token;
   final String refresh_token;

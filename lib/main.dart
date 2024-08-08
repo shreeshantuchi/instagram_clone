@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
-import 'package:login_token_app/core/theme/textThme.dart';
+import 'package:login_token_app/core/theme/text_thme.dart';
 import 'package:login_token_app/core/theme/theme.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
 

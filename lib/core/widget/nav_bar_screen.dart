@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:login_token_app/core/theme/textThme.dart';
+import 'package:login_token_app/core/theme/text_thme.dart';
 
 class NavBarScreen extends StatefulWidget {
   const NavBarScreen({super.key});

@@ -18,15 +18,13 @@ class AppTheme {
 
   static final lightTheme = ThemeData.light().copyWith(
       scaffoldBackgroundColor: AppPallet.whiteColor,
-      inputDecorationTheme: InputDecorationTheme(
-        contentPadding: const EdgeInsets.all(27),
+      inputDecorationTheme: const InputDecorationTheme(
+        contentPadding: EdgeInsets.all(12),
+        disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(width: 1, color: InstagramColors.grey)),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide:
-                const BorderSide(width: 2, color: AppPallet.greyBorderColor)),
+            borderSide: BorderSide(width: 0.3, color: InstagramColors.grey)),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide:
-                const BorderSide(width: 2, color: AppPallet.focusColor)),
+            borderSide: BorderSide(width: 0.3, color: InstagramColors.grey)),
       ));
 }
