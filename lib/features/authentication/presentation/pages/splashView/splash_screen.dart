@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:login_token_app/auth/bloc/auth_bloc.dart';
-import 'package:login_token_app/auth/bloc/auth_state.dart';
-import 'package:login_token_app/auth/pages/homeView/home_view.dart';
-import 'package:login_token_app/auth/pages/loginView/login_view.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_state.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/homeView/home_view.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/loginView/login_view.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
 import 'package:login_token_app/core/widget/loading_indicator.dart';
-import 'package:login_token_app/main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -51,15 +50,15 @@ class _SplashScreenState extends State<SplashScreen> {
         print(state);
         switch (state) {
           case OnAuthLoadingState():
-            return LoadingIndicator(text: "Loading");
+            return const LoadingIndicator(text: "Loading");
           case OnLogInAuthenticatedState():
-            return MyHomePage(title: "ggg");
+            return const MyHomePage(title: "Log In Authentication");
           case OnAppStartLogInAuthenticatedState():
-            return MyHomePage(title: "ggg");
+            return const MyHomePage(title: "app restart Authentication");
           case OnLoginFailureState():
-            return LoginView();
+            return const LoginView();
           case OnLogInUnAuthenticactedState():
-            return LoginView();
+            return const LoginView();
 
           default:
             return const LoadingIndicator(text: "Initializing");

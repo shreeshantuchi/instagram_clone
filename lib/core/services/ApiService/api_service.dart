@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:login_token_app/core/constants/client_detials.dart';
 import 'package:login_token_app/core/constants/url/app_urls.dart';
@@ -38,7 +36,6 @@ class ApiService {
     }
   }
 
-  // ignore: body_might_complete_normally_nullable
   Future<Map<String, dynamic>?> sendGetRequest(
       String accessToken, String url) async {
     final response = await http.get(
@@ -68,6 +65,7 @@ class ApiService {
       default:
         return null;
     }
+    return null;
   }
 
   Future<Map<String, dynamic>?> refreshAccessToken() async {

@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:login_token_app/auth/bloc/auth_bloc.dart';
-import 'package:login_token_app/auth/bloc/auth_event.dart';
-import 'package:login_token_app/auth/bloc/auth_state.dart';
-import 'package:login_token_app/auth/pages/splashView/splash_screen.dart';
+import 'package:login_token_app/core/widget/nav_bar_screen.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
 import 'package:login_token_app/core/services/ApiService/api_service.dart';
 import 'package:login_token_app/core/services/sharedPreference/shared_preference_service.dart';
 import 'package:login_token_app/core/widget/custom_button.dart';
-import 'package:login_token_app/userManagement/bloc/user_maanagement_bloc.dart';
-import 'package:login_token_app/userManagement/bloc/user_maanagement_event.dart';
-import 'package:login_token_app/userManagement/bloc/user_management_state.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_bloc.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_event.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_management_state.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -26,29 +25,14 @@ class _MyHomePageState extends State<MyHomePage> {
   SharedPreferencesService sharedPreferencesService =
       SharedPreferencesService();
 
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   void initState() {
-    context.read<UserManagementBloc>().add(GetUserEvent());
-    // TODO: implement initState
+    context.read<UserManagementBloc>().add(const GetUserEvent());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather6
-    // than having to individually change instances of widgets.
     return BlocListener<UserManagementBloc, UserManagementState>(
       listener: (event, state) async {
         print(state);
@@ -57,7 +41,7 @@ class _MyHomePageState extends State<MyHomePage> {
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: Text("log out"),
+                  title: const Text("log out"),
                   actions: [
                     CustomButton(
                       text: "Ok",
@@ -69,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SplashScreen()),
+                              builder: (context) => const SplashScreen()),
                           (Route<dynamic> route) => false,
                         );
                       },
@@ -86,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Scaffold scaffoldBody(BuildContext context) {
   return Scaffold(
+    bottomNavigationBar: const NavBarScreen(),
     drawer: Drawer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -105,9 +90,8 @@ Scaffold scaffoldBody(BuildContext context) {
       ),
     ),
     appBar: AppBar(),
-    body: Center(
+    body: const Center(
       child: Text("Logged in"),
-      //  // This trailing comma makes auto-formatting nicer for build methods.
     ),
   );
 }

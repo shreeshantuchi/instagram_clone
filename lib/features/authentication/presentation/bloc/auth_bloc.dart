@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:login_token_app/auth/bloc/auth_event.dart';
-import 'package:login_token_app/auth/bloc/auth_state.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_state.dart';
 import 'package:login_token_app/core/constants/url/app_urls.dart';
 import 'package:login_token_app/core/services/ApiService/api_service.dart';
 import 'package:login_token_app/core/services/sharedPreference/shared_preference_service.dart';
@@ -13,7 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   AuthBloc() : super(const OnAuthInitialState()) {
     on<LoginEvent>(
       (event, emit) async {
-        emit(OnAuthLoadingState());
+        emit(const OnAuthLoadingState());
         Map<String, dynamic>? data = await apiService.sendPostRequest(
             event.data, baseUrl + loginEndpoint);
         if (data != null) {
