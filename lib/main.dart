@@ -6,7 +6,7 @@ import 'package:login_token_app/features/authentication/presentation/bloc/auth_e
 import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
 import 'package:login_token_app/core/theme/textThme.dart';
 import 'package:login_token_app/core/theme/theme.dart';
-import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_bloc.dart';
+import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
 
 void main() {
   runApp(const MyApp());
