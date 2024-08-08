@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:login_token_app/core/constants/strings/strings.dart';
 import 'package:login_token_app/core/theme/text_thme.dart';
 import 'package:login_token_app/core/widget/custom_button.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
@@ -9,7 +8,9 @@ import 'package:login_token_app/features/authentication/presentation/bloc/auth_e
 import 'package:login_token_app/core/constants/client_detials.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
 import 'package:login_token_app/core/widget/custom_text_form_field.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/loginView/widgets/forgot_password.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/loginView/widgets/password_textfield.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/loginView/widgets/sign_in_text.dart';
 
 class LoginView extends StatefulWidget {
   static String pathName = "loginView";
@@ -68,7 +69,7 @@ class _LoginFormState extends State<LoginForm> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Spacer(),
+              const Spacer(),
               Center(
                 child: Text(
                   "Instagram",
@@ -85,30 +86,12 @@ class _LoginFormState extends State<LoginForm> {
               const SizedBox(
                 height: 20,
               ),
-              ValueListenableBuilder(
-                  valueListenable: showPassword,
-                  builder: (context, bool password, child) {
-                    return CustomTextFormField(
-                      onScureText: showPassword,
-                      iconList: const [
-                        PhosphorIconsBold.eye,
-                        PhosphorIconsBold.eyeSlash
-                      ],
-                      controller: passwordController,
-                      hintText: "Password",
-                    );
-                  }),
+              PasswordField(
+                  showPassword: showPassword,
+                  passwordController: passwordController),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 16.h),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(AppString.forgotPassword,
-                        style: instagramTextTheme.bodySmall!.copyWith(
-                            color: InstagramColors.buttonColor,
-                            fontWeight: FontWeight.bold))
-                  ],
-                ),
+                child: const ForgotPasswrod(),
               ),
               CustomButton(
                 color: InstagramColors.buttonColor,
@@ -147,31 +130,6 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-class SignInText extends StatelessWidget {
-  const SignInText({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {},
-      child: RichText(
-        text: TextSpan(
-            text: AppString.dontHaveanAccount,
-            style: instagramTextTheme.labelMedium,
-            children: [
-              TextSpan(
-                  text: " Sign up",
-                  style: instagramTextTheme.labelMedium!.copyWith(
-                      color: InstagramColors.buttonColor,
-                      fontWeight: FontWeight.bold)),
-            ]),
       ),
     );
   }
