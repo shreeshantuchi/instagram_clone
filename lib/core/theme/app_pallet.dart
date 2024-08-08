@@ -40,6 +40,6 @@ class InstagramColors {
   static const Color blueDark = Color(0xFF0D47A1);
   static const Color grey = Color(0xFFB1B1B1);
   static Color textFieldColor = grey.withOpacity(0.1);
-  static const Color white = Color(0xFFFFFFFF);
-  static const Color black = Color(0xFF000000);
+  static const Color foregroundColor = Color(0xFFFFFFFF);
+  static const Color navBarIconColor = Color(0xFF000000);
 }
