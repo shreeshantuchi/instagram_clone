@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class NavItem extends StatelessWidget {
   final IconData icon;
@@ -33,7 +34,7 @@ class NavItem extends StatelessWidget {
           children: [
             Icon(
               icon,
-              size: 24,
+              size: 12.sp,
               color:
                   currentIndex == index ? selectedColor : unselectedIconColor,
             ),
@@ -43,7 +44,7 @@ class NavItem extends StatelessWidget {
                 color: currentIndex == index
                     ? selectedColor
                     : unselectedLabelColor,
-                fontSize: 12,
+                fontSize: 12.sp,
                 fontWeight: FontWeight.bold,
               ),
             ),
