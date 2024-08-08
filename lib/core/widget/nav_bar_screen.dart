@@ -8,6 +8,7 @@ import 'package:login_token_app/features/authentication/presentation/pages/reels
 import 'package:login_token_app/features/authentication/presentation/pages/search_page/search_page_screen.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+
 class NavBarScreen extends StatefulWidget {
   const NavBarScreen({super.key});
 

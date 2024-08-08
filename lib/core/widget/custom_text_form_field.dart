@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_token_app/core/theme/app_pallet.dart';
 
 class CustomTextFormField extends StatelessWidget {
   final String hintText;
@@ -36,6 +37,8 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       obscureText: onScureText != null ? onScureText!.value : false,
       decoration: InputDecoration(
+        filled: true,
+        fillColor: InstagramColors.textFieldColor,
         contentPadding: contentPadding != null
             ? EdgeInsets.symmetric(
                 vertical: contentPadding! / 2, horizontal: contentPadding!)
@@ -49,6 +52,7 @@ class CustomTextFormField extends StatelessWidget {
               )
             : null,
         border: InputBorder.none,
+        disabledBorder: InputBorder.none,
         hintText: hintText,
       ),
     );

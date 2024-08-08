@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:login_token_app/core/widget/nav_bar_screen.dart';
-import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
-import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
+
 import 'package:login_token_app/core/services/ApiService/api_service.dart';
 import 'package:login_token_app/core/services/sharedPreference/shared_preference_service.dart';
 import 'package:login_token_app/core/widget/custom_button.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_event.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_management_state.dart';
@@ -40,7 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: const Text("log out"),
+                  title: const Text("Log out"),
                   actions: [
                     CustomButton(
                       text: "Ok",
@@ -69,7 +69,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
 Scaffold scaffoldBody(BuildContext context) {
   return Scaffold(
-    // bottomNavigationBar: const NavBarScreen(),
     drawer: Drawer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,6 +90,7 @@ Scaffold scaffoldBody(BuildContext context) {
     appBar: AppBar(),
     body: const Center(
       child: Text("Logged in"),
+      //  // This trailing comma makes auto-formatting nicer for build methods.
     ),
   );
 }

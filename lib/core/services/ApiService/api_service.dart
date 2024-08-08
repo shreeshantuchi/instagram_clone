@@ -10,13 +10,11 @@ class ApiService {
   // ignore: body_might_complete_normally_nullable
   Future<Map<String, dynamic>?> sendPostRequest(
       Map<String, dynamic> data, String url) async {
-    print(json.encode(data));
     final response = await http.post(
       Uri.parse(url),
       headers: {'Content-Type': 'application/json'},
       body: json.encode(data),
     );
-    print(response.statusCode);
 
     switch (response.statusCode) {
       case 200:
@@ -45,7 +43,6 @@ class ApiService {
         'Authorization': 'Bearer $accessToken'
       },
     );
-    print(response.statusCode);
 
     switch (response.statusCode) {
       case 200:
@@ -54,8 +51,6 @@ class ApiService {
       case 401:
         Map<String, dynamic>? newData = await refreshAccessToken();
         if (newData != null) {
-          print(newData);
-          print("haha");
           sendGetRequest(newData["access_token"], url);
         } else {
           return null;
@@ -69,7 +64,6 @@ class ApiService {
   }
 
   Future<Map<String, dynamic>?> refreshAccessToken() async {
-    print("renewing accessToken");
     final refreshToken = await sharedPreferencesService.getRefreshToken();
     final response = await http.post(
       Uri.parse(baseUrl + renewRefreshTokenEndPoint),
@@ -81,7 +75,6 @@ class ApiService {
         "grant_type": "refresh_token"
       }),
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       final newAccessToken = json.decode(response.body)['access_token'];
       final newRefreshToken = json.decode(response.body)['refresh_token'];

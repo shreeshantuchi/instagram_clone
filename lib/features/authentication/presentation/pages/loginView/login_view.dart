@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:login_token_app/core/theme/text_thme.dart';
+import 'package:login_token_app/core/widget/custom_button.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:login_token_app/core/constants/client_detials.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
 import 'package:login_token_app/core/widget/custom_text_form_field.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/loginView/widgets/forgot_password.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/loginView/widgets/password_textfield.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/loginView/widgets/sign_in_text.dart';
 
 class LoginView extends StatefulWidget {
   static String pathName = "loginView";
@@ -19,11 +24,8 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Login"),
-      ),
-      body: const Center(
+    return const Scaffold(
+      body: Center(
         child: LoginForm(),
       ),
     );
@@ -59,77 +61,75 @@ class _LoginFormState extends State<LoginForm> {
   ValueNotifier<bool> showPassword = ValueNotifier(true);
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 380,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            "Sign In",
-            style: TextStyle(
-                color: AppPallet.whiteColor,
-                fontSize: 36,
-                fontWeight: FontWeight.bold),
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: 640.h,
+        child: Padding(
+          padding: EdgeInsets.all(12.sp),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Spacer(),
+              Center(
+                child: Text(
+                  "Instagram",
+                  style: instagramHeading.copyWith(fontSize: 42.sp),
+                ),
+              ),
+              SizedBox(
+                height: 36.h,
+              ),
+              CustomTextFormField(
+                controller: emailController,
+                hintText: "E-mail",
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              PasswordField(
+                  showPassword: showPassword,
+                  passwordController: passwordController),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.h),
+                child: const ForgotPasswrod(),
+              ),
+              CustomButton(
+                color: InstagramColors.buttonColor,
+                onTap: () {
+                  context.read<AuthBloc>().add(
+                        LoginEvent(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            data: {
+                              "client_id": ClientDetials.clientId,
+                              "client_secret": ClientDetials.clientSecrets,
+                              "username": "+977-${emailController.text}",
+                              "password": passwordController.text,
+                              "grant_type": "password"
+                            }),
+                      );
+                },
+                text: "Log in",
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 24.h),
+                child: Text(
+                  "Or",
+                  style: instagramTextTheme.bodySmall!
+                      .copyWith(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Text(
+                "Log in with Facebook",
+                style: instagramTextTheme.bodySmall!.copyWith(
+                    color: InstagramColors.buttonColor,
+                    fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              const SignInText(),
+            ],
           ),
-          const SizedBox(
-            height: 24,
-          ),
-          CustomTextFormField(
-            controller: emailController,
-            hintText: "E-mail",
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ValueListenableBuilder(
-              valueListenable: showPassword,
-              builder: (context, bool password, child) {
-                return CustomTextFormField(
-                  onScureText: showPassword,
-                  iconList: const [
-                    PhosphorIconsBold.eye,
-                    PhosphorIconsBold.eyeSlash
-                  ],
-                  controller: passwordController,
-                  hintText: "Password",
-                );
-              }),
-          ElevatedButton(
-            onPressed: () {
-              context.read<AuthBloc>().add(
-                    LoginEvent(
-                        email: emailController.text,
-                        password: passwordController.text,
-                        data: {
-                          "client_id": ClientDetials.clientId,
-                          "client_secret": ClientDetials.clientSecrets,
-                          "username": "+977-${emailController.text}",
-                          "password": passwordController.text,
-                          "grant_type": "password"
-                        }),
-                  );
-            },
-            child: const Text("Login"),
-          ),
-          GestureDetector(
-            onTap: () {},
-            child: RichText(
-              text: TextSpan(
-                  text: "Need a account ?",
-                  style: Theme.of(context).textTheme.labelMedium,
-                  children: [
-                    TextSpan(
-                        text: " Sign In",
-                        style: Theme.of(context)
-                            .textTheme
-                            .labelMedium!
-                            .copyWith(
-                                color: AppPallet.blueColor,
-                                fontWeight: FontWeight.bold)),
-                  ]),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
