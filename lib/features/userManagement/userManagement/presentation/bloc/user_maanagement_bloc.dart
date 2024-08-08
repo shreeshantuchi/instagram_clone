@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:login_token_app/core/services/ApiService/api_service.dart';
 import 'package:login_token_app/core/services/sharedPreference/shared_preference_service.dart';
-import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_event.dart';
-import 'package:login_token_app/features/userManagement/presentation/bloc/user_management_state.dart';
+import 'package:login_token_app/userManagement/bloc/presentation/bloc/user_maanagement_event.dart';
+import 'package:login_token_app/userManagement/bloc/presentation/bloc/user_management_state.dart';
 
 class UserManagementBloc
     extends Bloc<UserMaanagementEvent, UserManagementState> {
