@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/add_page/add_page_screen.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/feed_page/feed_page_screen.dart';
+
 import 'package:login_token_app/features/authentication/presentation/pages/homeView/home_view.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/profile_page/profile_page_screen.dart';
 import 'package:login_token_app/features/authentication/presentation/pages/reels_page/reels_page_screen.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/search_page/search_page_screen.dart';
+import 'package:login_token_app/features/feed/presentation/pages/feed_page/feed_page_screen.dart';
+import 'package:login_token_app/features/feed/presentation/pages/add_page/add_page_screen.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class NavBarScreen extends StatefulWidget {
@@ -21,12 +20,9 @@ class _NavBarScreenState extends State<NavBarScreen> {
 
   final List<Widget> screens = const [
     HomeView(),
-    SearchPageScreen(),
-    FeedPageScreen(),
     AddPageScreen(),
+    FeedPageScreen(),
     ReelsPageScreen(),
-    ProfilePageScreen(),
-    Scaffold(),
   ];
 
   @override
