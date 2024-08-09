@@ -11,16 +11,14 @@ import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bl
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_event.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_management_state.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class HomeView extends StatefulWidget {
+  const HomeView({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomeView> createState() => _HomeViewState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeViewState extends State<HomeView> {
   ApiService apiService = ApiService();
   SharedPreferencesService sharedPreferencesService =
       SharedPreferencesService();

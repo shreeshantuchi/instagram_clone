@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/add_page/add_page_screen.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/feed_page/feed_page_screen.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/profile_page/profile_page_screen.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/reels_page/reels_page_screen.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/search_page/search_page_screen.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
+import 'package:login_token_app/features/authentication/presentation/pages/homeView/home_view.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/reels_page/reels_page_screen.dart';
+import 'package:login_token_app/features/feed/presentation/pages/feed_page/feed_page_screen.dart';
+import 'package:login_token_app/features/feed/presentation/pages/add_page/add_page_screen.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class NavBarScreen extends StatefulWidget {
   const NavBarScreen({super.key});
@@ -20,13 +19,10 @@ class _NavBarScreenState extends State<NavBarScreen> {
   int currentIndex = 2; // Default to the FeedPageScreen
 
   final List<Widget> screens = const [
-    Scaffold(),
-    SearchPageScreen(),
-    FeedPageScreen(),
+    HomeView(),
     AddPageScreen(),
+    FeedPageScreen(),
     ReelsPageScreen(),
-    ProfilePageScreen(),
-    Scaffold(),
   ];
 
   @override
@@ -41,21 +37,21 @@ class _NavBarScreenState extends State<NavBarScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               _buildNavItem(
-                  currentIndex == 2
+                  currentIndex == 0
                       ? PhosphorIconsFill.house
                       : PhosphorIconsRegular.house,
-                  2),
+                  0),
               _buildNavItem(
                   currentIndex == 1
                       ? PhosphorIconsBold.magnifyingGlass
                       : PhosphorIconsRegular.magnifyingGlass,
                   1),
               _buildNavItem(
-                  currentIndex == 3
+                  currentIndex == 2
                       ? PhosphorIconsFill.plusSquare
                       : PhosphorIconsRegular.plusSquare,
-                  3),
-              _buildNavItem(PhosphorIconsRegular.video, 4),
+                  2),
+              _buildNavItem(PhosphorIconsRegular.video, 3),
               CircleAvatar(
                 radius: 11.r,
                 backgroundColor: InstagramColors.foregroundColor,
@@ -84,7 +80,7 @@ class _NavBarScreenState extends State<NavBarScreen> {
           children: [
             Icon(
               icon,
-              size: 33,
+              size: 24.sp,
               color: currentIndex == index
                   ? InstagramColors.navBarIconColor
                   : InstagramColors.navBarIconColor.withOpacity(0.5),
