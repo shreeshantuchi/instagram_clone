@@ -6,14 +6,20 @@ import 'package:login_token_app/features/authentication/presentation/bloc/auth_e
 import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
 import 'package:login_token_app/core/theme/text_thme.dart';
 import 'package:login_token_app/core/theme/theme.dart';
+import 'package:login_token_app/features/feed/feed_injection_container.dart';
+import 'package:login_token_app/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  final feedBloc = await createFeedBloc();
+  runApp(MyApp(
+    feedBloc: feedBloc,
+  ));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final FeedBloc? feedBloc;
+  const MyApp({super.key, this.feedBloc});
 
   // This widget is the root of your application.
   @override
@@ -25,6 +31,9 @@ class MyApp extends StatelessWidget {
             ..add(
               const AppStartEvent(),
             ),
+        ),
+        BlocProvider<FeedBloc>(
+          create: (context) => feedBloc!,
         ),
         BlocProvider<UserManagementBloc>(
           create: (context) => UserManagementBloc(),

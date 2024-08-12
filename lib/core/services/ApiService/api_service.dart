@@ -47,6 +47,7 @@ class ApiService {
     switch (response.statusCode) {
       case 200:
         Map<String, dynamic> data = json.decode(response.body);
+
         return data;
       case 401:
         Map<String, dynamic>? newData = await refreshAccessToken();
