@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:login_token_app/features/authentication/auth_injection_container.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
@@ -12,14 +13,17 @@ import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bl
 
 void main() async {
   final feedBloc = await createFeedBloc();
+  final authBloc = await createAuthBloc();
   runApp(MyApp(
     feedBloc: feedBloc,
+    authBloc: authBloc,
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final FeedBloc? feedBloc;
-  const MyApp({super.key, this.feedBloc});
+  final FeedBloc feedBloc;
+  final AuthBloc authBloc;
+  const MyApp({super.key, required this.feedBloc, required this.authBloc});
 
   // This widget is the root of your application.
   @override
@@ -27,13 +31,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => AuthBloc()
+          create: (context) => authBloc
             ..add(
               const AppStartEvent(),
             ),
         ),
         BlocProvider<FeedBloc>(
-          create: (context) => feedBloc!,
+          create: (context) => feedBloc,
         ),
         BlocProvider<UserManagementBloc>(
           create: (context) => UserManagementBloc(),

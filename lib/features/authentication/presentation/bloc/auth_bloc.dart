@@ -1,51 +1,51 @@
-import 'package:bloc/bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_token_app/features/authentication/domain/usecase/login_use_cases.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_state.dart';
-import 'package:login_token_app/core/constants/url/app_urls.dart';
-import 'package:login_token_app/core/services/ApiService/api_service.dart';
-import 'package:login_token_app/core/services/sharedPreference/shared_preference_service.dart';
-import 'package:login_token_app/data/model/user.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  static AuthTokenModel? user;
-  ApiService apiService = ApiService();
-  SharedPreferencesService sharedPreferenceService = SharedPreferencesService();
-  AuthBloc() : super(const OnAuthInitialState()) {
+  final LoginUseCase loginUseCase;
+  final GetStoredTokensUseCase getStoredTokensUseCase;
+  final SignOutUseCase signOutUseCase;
+
+  AuthBloc({
+    required this.loginUseCase,
+    required this.getStoredTokensUseCase,
+    required this.signOutUseCase,
+  }) : super(const OnAuthInitialState()) {
     on<LoginEvent>(
       (event, emit) async {
         emit(const OnAuthLoadingState());
-        Map<String, dynamic>? data = await apiService.sendPostRequest(
-            event.data, baseUrl + loginEndpoint);
-        if (data != null) {
-          final AuthTokenModel user = AuthTokenModel.fromAPi(data);
-          await sharedPreferenceService.saveAccessToken(user.access_token);
-          await sharedPreferenceService.saveRefreshToken(user.refresh_token);
-          print(user.refresh_token);
-
-          emit(OnLogInAuthenticatedState(user));
-        } else {
-          emit(OnLoginFailureState(error: "Unable to Login"));
+        try {
+          final user = await loginUseCase.call(event.data);
+          if (user != null) {
+            emit(const OnAppStartLogInAuthenticatedState());
+          } else {
+            emit(const OnLogInUnAuthenticatedState());
+          }
+        } catch (e) {
+          emit(const OnLoginFailureState(error: "Unable to Login"));
         }
       },
     );
 
     on<AppStartEvent>((event, emit) async {
-      String? access_token = await sharedPreferenceService.getAccessToken();
-      String? refresh_token = await sharedPreferenceService.getRefreshToken();
-      print("refresh:$refresh_token");
-      print("access:$access_token");
-      if (access_token != null) {
-        emit(OnAppStartLogInAuthenticatedState());
-      } else {
-        emit(OnLogInUnAuthenticactedState());
+      try {
+        final user = await getStoredTokensUseCase.call();
+        if (user != null) {
+          emit(const OnAppStartLogInAuthenticatedState());
+        } else {
+          emit(const OnLogInUnAuthenticatedState());
+        }
+      } catch (e) {
+        emit(const OnLogInUnAuthenticatedState());
       }
     });
 
     on<SignOutEvent>((event, emit) async {
       emit(const OnAuthLoadingState());
-      sharedPreferenceService.deleteTokens();
-
-      emit(const OnLogInUnAuthenticactedState());
+      await signOutUseCase.call();
+      emit(const OnLogInUnAuthenticatedState());
     });
   }
 }
