@@ -2,19 +2,14 @@ import 'package:login_token_app/features/feed/domain/entities/post.dart';
 
 class PostModel extends Post {
   PostModel({
-    required String? postId,
-    required String? userUrl,
+    required super.postId,
+    required super.userUrl,
     required String? postCaption,
-    required String? userId,
-    required String? username,
-    required List? postUrl,
+    required super.userId,
+    required super.username,
+    required super.postUrl,
   }) : super(
-          postUrl: postUrl,
-          postId: postId,
-          userUrl: userUrl,
           description: postCaption,
-          userId: userId,
-          username: username,
         );
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
