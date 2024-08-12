@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
 
-import 'package:login_token_app/features/authentication/presentation/pages/homeView/home_view.dart';
 import 'package:login_token_app/features/authentication/presentation/pages/reels_page/reels_page_screen.dart';
 import 'package:login_token_app/features/feed/presentation/pages/feed_page/feed_page_screen.dart';
 import 'package:login_token_app/features/feed/presentation/pages/add_page/add_page_screen.dart';
@@ -16,12 +15,12 @@ class NavBarScreen extends StatefulWidget {
 }
 
 class _NavBarScreenState extends State<NavBarScreen> {
-  int currentIndex = 2; // Default to the FeedPageScreen
+  int currentIndex = 0; // Default to the FeedPageScreen
 
   final List<Widget> screens = const [
-    HomeView(),
-    AddPageScreen(),
     FeedPageScreen(),
+    AddPageScreen(),
+    ReelsPageScreen(),
     ReelsPageScreen(),
   ];
 
@@ -51,7 +50,11 @@ class _NavBarScreenState extends State<NavBarScreen> {
                       ? PhosphorIconsFill.plusSquare
                       : PhosphorIconsRegular.plusSquare,
                   2),
-              _buildNavItem(PhosphorIconsRegular.video, 3),
+              _buildNavItem(
+                  currentIndex == 3
+                      ? PhosphorIconsFill.video
+                      : PhosphorIconsRegular.video,
+                  3),
               CircleAvatar(
                 radius: 11.r,
                 backgroundColor: InstagramColors.foregroundColor,
