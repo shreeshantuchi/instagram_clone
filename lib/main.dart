@@ -11,6 +11,7 @@ import 'package:login_token_app/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
 
 void main() async {
+  print("hello");
   final feedBloc = await createFeedBloc();
   runApp(MyApp(
     feedBloc: feedBloc,
