@@ -7,6 +7,10 @@ import 'package:login_token_app/features/authentication/presentation/pages/splas
 import 'package:login_token_app/core/services/ApiService/api_service.dart';
 import 'package:login_token_app/core/services/sharedPreference/shared_preference_service.dart';
 import 'package:login_token_app/core/widget/custom_button.dart';
+import 'package:login_token_app/features/feed/presentation/bloc/feed_bloc.dart';
+import 'package:login_token_app/features/feed/presentation/bloc/feed_event.dart';
+import 'package:login_token_app/features/feed/presentation/bloc/feed_state.dart';
+import 'package:login_token_app/features/feed/presentation/widgets/post_list.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_event.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_management_state.dart';
@@ -25,7 +29,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    context.read<UserManagementBloc>().add(const GetUserEvent());
+    //context.read<UserManagementBloc>().add(const GetUserEvent());
+    context.read<FeedBloc>().add(GetFeedEvent());
     super.initState();
   }
 
@@ -67,28 +72,42 @@ class _HomeViewState extends State<HomeView> {
 
 Scaffold scaffoldBody(BuildContext context) {
   return Scaffold(
-    // bottomNavigationBar: const NavBarScreen(),
-    drawer: Drawer(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          const Column(
-            children: [],
-          ),
-          CustomButton(
-            text: "Sign Out",
-            onTap: () {
-              context.read<AuthBloc>().add(
-                    const SignOutEvent(),
-                  );
-            },
-          )
-        ],
+
+      // bottomNavigationBar: const NavBarScreen(),
+      drawer: Drawer(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Column(
+              children: [],
+            ),
+            CustomButton(
+              text: "Sign Out",
+              onTap: () {
+                context.read<AuthBloc>().add(
+                      const SignOutEvent(),
+                    );
+              },
+            )
+          ],
+        ),
       ),
-    ),
-    appBar: AppBar(),
-    body: const Center(
-      child: Text("Logged in"),
-    ),
-  );
+      appBar: AppBar(),
+      body: BlocConsumer<FeedBloc, FeedState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          switch (state) {
+            case FeedLoadingState():
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case FeedLoadedState():
+              return PostList(
+                postList: state.postList,
+              );
+            default:
+              return const SizedBox.shrink();
+          }
+        },
+      ));
 }
