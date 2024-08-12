@@ -29,7 +29,7 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
 
   @override
   void initState() {
-    //context.read<UserManagementBloc>().add(const GetUserEvent());
+    context.read<UserManagementBloc>().add(const GetUserEvent());
     context.read<FeedBloc>().add(GetFeedEvent());
     super.initState();
   }
