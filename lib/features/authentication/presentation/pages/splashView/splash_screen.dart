@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:login_token_app/core/widget/nav_bar_screen.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_state.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/homeView/home_view.dart';
 import 'package:login_token_app/features/authentication/presentation/pages/loginView/login_view.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
 import 'package:login_token_app/core/widget/loading_indicator.dart';
