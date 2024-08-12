@@ -4,6 +4,8 @@ import 'package:login_token_app/core/theme/app_pallet.dart';
 import 'package:login_token_app/core/theme/text_thme.dart';
 import 'package:login_token_app/features/feed/domain/entities/post.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:login_token_app/features/feed/presentation/widgets/action_row.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class PostItem extends StatefulWidget {
   const PostItem({super.key, required this.post});
@@ -90,35 +92,28 @@ class _PostItemState extends State<PostItem> {
                   }).toList(),
                 )
               : Container(
-                  height: 200,
+                  height: 200.h,
                   width: double.infinity,
                 ),
           widget.post.postUrl!.isNotEmpty
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: widget.post.postUrl!.asMap().entries.map((entry) {
-                    print(entry.key);
-                    print("current:" + current.toString());
-                    return GestureDetector(
-                      onTap: () => _controller.animateToPage(entry.key),
-                      child: Container(
-                        width: 12.0,
-                        height: 12.0,
-                        margin: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 4.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: current == entry.key
-                                ? Colors.black
-                                : Colors.grey),
-                      ),
-                    );
-                  }).toList(),
-                )
-              : SizedBox.shrink(),
-          Text(widget.post.username.toString()),
-          Text(widget.post.description.toString()),
-          Text(widget.post.userId.toString()),
+              ? ActionRow(
+                  widget: widget, current: current, controller: _controller)
+              : const SizedBox.shrink(),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.post.username.toString(),
+                  style: instagramTextTheme.labelLarge!.copyWith(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+                Text(widget.post.description.toString()),
+                Text(widget.post.userId.toString()),
+              ],
+            ),
+          ),
         ],
       ),
     );
