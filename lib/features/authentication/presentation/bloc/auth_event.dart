@@ -10,8 +10,11 @@ class LoginEvent extends AuthEvent {
   final String password;
   final Map<String, dynamic> data;
 
-  const LoginEvent(
-      {required this.email, required this.password, required this.data});
+  const LoginEvent({
+    required this.email,
+    required this.password,
+    required this.data,
+  });
 }
 
 class SignUpEvent extends AuthEvent {

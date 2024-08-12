@@ -20,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         switch (state) {
-          case OnLogInUnAuthenticactedState():
+          case OnLogInUnAuthenticatedState():
             break;
           case OnLogInAuthenticatedState():
             const snackbar = SnackBar(
@@ -56,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
             return const NavBarScreen();
           case OnLoginFailureState():
             return const LoginView();
-          case OnLogInUnAuthenticactedState():
+          case OnLogInUnAuthenticatedState():
             return const LoginView();
 
           default:

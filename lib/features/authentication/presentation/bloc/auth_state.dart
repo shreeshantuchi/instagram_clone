@@ -1,7 +1,5 @@
-// ignore_for_file: overridden_fields
-
 import 'package:flutter/foundation.dart';
-import 'package:login_token_app/data/model/user.dart';
+import 'package:login_token_app/features/authentication/data/models/auth_token_model.dart';
 
 @immutable
 abstract class AuthState {
@@ -25,11 +23,11 @@ class OnLogInAuthenticatedState extends AuthState {
 }
 
 class OnAppStartLogInAuthenticatedState extends AuthState {
-  OnAppStartLogInAuthenticatedState() : super(null, null);
+  const OnAppStartLogInAuthenticatedState() : super(null, null);
 }
 
-class OnLogInUnAuthenticactedState extends AuthState {
-  const OnLogInUnAuthenticactedState() : super(null, null);
+class OnLogInUnAuthenticatedState extends AuthState {
+  const OnLogInUnAuthenticatedState() : super(null, null);
 }
 
 class OnLoginFailureState extends AuthState {
