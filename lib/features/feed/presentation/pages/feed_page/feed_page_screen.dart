@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:login_token_app/core/theme/app_pallet.dart';
+import 'package:login_token_app/core/theme/text_thme.dart';
 import 'package:login_token_app/core/widget/nav_bar_screen.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
@@ -14,6 +17,7 @@ import 'package:login_token_app/features/feed/presentation/widgets/post_list.dar
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_event.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_management_state.dart';
+import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FeedPageScreen extends StatefulWidget {
   const FeedPageScreen({super.key});
@@ -36,42 +40,46 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UserManagementBloc, UserManagementState>(
-      listener: (event, state) async {
-        if (state is OnUserRetrivedFailureState) {
-          await showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text("log out"),
-                  actions: [
-                    CustomButton(
-                      text: "Ok",
-                      onTap: () {
-                        context.read<AuthBloc>().add(
-                              const SignOutEvent(),
-                            );
+    return SafeArea(
+      child: BlocListener<UserManagementBloc, UserManagementState>(
+        listener: (event, state) async {
+          print(state);
+          if (state is OnUserRetrivedFailureState) {
+            await showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("log out"),
+                    actions: [
+                      CustomButton(
+                        text: "Ok",
+                        onTap: () {
+                          context.read<AuthBloc>().add(
+                                const SignOutEvent(),
+                              );
 
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SplashScreen()),
-                          (Route<dynamic> route) => false,
-                        );
-                      },
-                    ),
-                  ],
-                );
-              });
-        }
-      },
-      child: scaffoldBody(context),
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SplashScreen()),
+                            (Route<dynamic> route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                });
+          }
+        },
+        child: scaffoldBody(context),
+      ),
     );
   }
 }
 
 Scaffold scaffoldBody(BuildContext context) {
   return Scaffold(
+      backgroundColor: InstagramColors.foregroundColor,
 
       // bottomNavigationBar: const NavBarScreen(),
       drawer: Drawer(
@@ -92,9 +100,35 @@ Scaffold scaffoldBody(BuildContext context) {
           ],
         ),
       ),
-      appBar: AppBar(),
       body: BlocConsumer<FeedBloc, FeedState>(
-        listener: (context, state) {},
+        listener: (context, state) async {
+          if (state is FeedRetrivalFailureState) {
+            await showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text("log out"),
+                    actions: [
+                      CustomButton(
+                        text: "Ok",
+                        onTap: () {
+                          context.read<AuthBloc>().add(
+                                const SignOutEvent(),
+                              );
+
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SplashScreen()),
+                            (Route<dynamic> route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                });
+          }
+        },
         builder: (context, state) {
           switch (state) {
             case FeedLoadingState():

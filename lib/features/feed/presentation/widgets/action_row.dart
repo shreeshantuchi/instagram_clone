@@ -20,7 +20,7 @@ class ActionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+      padding: EdgeInsets.symmetric(horizontal: 7.w, vertical: 10.h),
       child: Stack(
         alignment: AlignmentDirectional.center,
         children: [
@@ -28,16 +28,16 @@ class ActionRow extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 80.w,
-                child: const Row(
+                width: 90.w,
+                child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(PhosphorIconsRegular.heart),
-                      Icon(PhosphorIconsRegular.chatCircle),
-                      Icon(PhosphorIconsRegular.paperPlaneTilt),
+                      Icon(PhosphorIconsRegular.heart, size: 24.sp),
+                      Icon(PhosphorIconsRegular.chatCircle, size: 24.sp),
+                      Icon(PhosphorIconsRegular.paperPlaneTilt, size: 24.sp),
                     ]),
               ),
-              const Icon(PhosphorIconsRegular.bookmarkSimple)
+              Icon(PhosphorIconsRegular.bookmarkSimple, size: 25.sp)
             ],
           ),
           ScrollDot(widget: widget, current: current, controller: _controller),
@@ -81,7 +81,7 @@ class ScrollDot extends StatelessWidget {
                             : Colors.grey),
                   ),
                 )
-              : SizedBox.shrink();
+              : const SizedBox.shrink();
         }).toList(),
       ),
     );
