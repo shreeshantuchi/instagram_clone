@@ -11,3 +11,5 @@ class FeedLoadedState extends FeedState {
 
   FeedLoadedState({required this.postList});
 }
+
+class FeedRetrivalFailureState extends FeedState {}
