@@ -1,9 +1,10 @@
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
-import 'package:login_token_app/core/theme/text_thme.dart';
 import 'package:login_token_app/features/feed/domain/entities/post.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:login_token_app/features/feed/presentation/widgets/animated_heart.dart';
 import 'package:login_token_app/features/feed/presentation/widgets/action_row.dart';
 
 class PostItem extends StatefulWidget {
@@ -17,9 +18,23 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   int current = 0;
   final CarouselSliderController _controller = CarouselSliderController();
+  final ValueNotifier<Color> _heartColor =
+      ValueNotifier<Color>(Colors.black); // Add this line
+  final ValueNotifier<bool> isHeart = ValueNotifier<bool>(false);
+
+  @override
+  void dispose() {
+    _heartColor.dispose(); // Dispose the ValueNotifier
+    super.dispose();
+  }
+
+  void _changeHeartColor() {
+    _heartColor.value =
+        InstagramColors.likeColor; // Change the color or any logic you prefer
+  }
+
   @override
   Widget build(BuildContext context) {
-    print(widget.post.userUrl);
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Column(
@@ -36,32 +51,26 @@ class _PostItemState extends State<PostItem> {
                       )
                     : CircleAvatar(
                         radius: 20.r,
-                        backgroundColor: InstagramColors.grey,
+                        backgroundColor: Colors.grey,
                       ),
-                SizedBox(
-                  width: 10.w,
-                ),
+                SizedBox(width: 10.w),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       widget.post.username.toString(),
-                      style: instagramTextTheme.bodyLarge!
-                          .copyWith(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       widget.post.username.toString(),
-                      style: instagramTextTheme.labelSmall!
-                          .copyWith(fontWeight: FontWeight.bold),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          SizedBox(
-            height: 10.h,
-          ),
+          SizedBox(height: 10.h),
           widget.post.postUrl!.isNotEmpty
               ? CarouselSlider(
                   carouselController: _controller,
@@ -78,26 +87,27 @@ class _PostItemState extends State<PostItem> {
                   items: widget.post.postUrl!.map((i) {
                     return Builder(
                       builder: (BuildContext context) {
-                        return SizedBox(
-                          height: 300.h,
-                          width: double.infinity,
-                          child: Image.network(
-                            i,
-                            fit: BoxFit.cover,
-                          ),
+                        return HeartOverImage(
+                          imageUrl: i,
+                          onAnimationEnd:
+                              _changeHeartColor, // Pass the callback
+                          heartColorNotifier: _heartColor,
+                          isHeartVisible: isHeart, // Pass the ValueNotifier
                         );
                       },
                     );
                   }).toList(),
                 )
-              : Container(
-                  height: 200.h,
-                  width: double.infinity,
-                ),
+              : Container(height: 200.h, width: double.infinity),
           widget.post.postUrl!.isNotEmpty
               ? ActionRow(
-                  widget: widget, current: current, controller: _controller)
-              : const SizedBox.shrink(),
+                  isHeartVisible: isHeart,
+                  widget: widget,
+                  current: current,
+                  controller: _controller,
+                  heartColorNotifier: _heartColor, // Pass the ValueNotifier
+                )
+              : SizedBox.shrink(),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: Column(
@@ -105,7 +115,7 @@ class _PostItemState extends State<PostItem> {
               children: [
                 Text(
                   widget.post.username.toString(),
-                  style: instagramTextTheme.labelLarge!.copyWith(
+                  style: TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 Text(widget.post.description.toString()),

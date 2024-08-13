@@ -11,11 +11,15 @@ class ActionRow extends StatelessWidget {
     required this.widget,
     required this.current,
     required CarouselSliderController controller,
+    required this.heartColorNotifier,
+    required this.isHeartVisible, // Added this line
   }) : _controller = controller;
 
   final PostItem widget;
   final int current;
   final CarouselSliderController _controller;
+  final ValueNotifier<Color> heartColorNotifier; //
+  final ValueNotifier<bool> isHeartVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +36,19 @@ class ActionRow extends StatelessWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(PhosphorIconsRegular.heart, size: 24.sp),
+                      ValueListenableBuilder<Color>(
+                        valueListenable: heartColorNotifier,
+                        builder: (context, heartColor, child) {
+                          return Icon(
+                            isHeartVisible.value
+                                ? PhosphorIconsFill.heart
+                                : PhosphorIconsRegular.heart,
+                            size: 24.sp,
+                            color:
+                                heartColor, // Use the color from ValueNotifier
+                          );
+                        },
+                      ),
                       Icon(PhosphorIconsRegular.chatCircle, size: 24.sp),
                       Icon(PhosphorIconsRegular.paperPlaneTilt, size: 24.sp),
                     ]),
