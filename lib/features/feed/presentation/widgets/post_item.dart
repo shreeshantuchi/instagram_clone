@@ -5,7 +5,6 @@ import 'package:login_token_app/core/theme/text_thme.dart';
 import 'package:login_token_app/features/feed/domain/entities/post.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:login_token_app/features/feed/presentation/widgets/action_row.dart';
-import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class PostItem extends StatefulWidget {
   const PostItem({super.key, required this.post});
