@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
+import 'package:login_token_app/core/widget/custom_button.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_state.dart';
 
 import 'package:login_token_app/features/authentication/presentation/pages/reels_page/reels_page_screen.dart';
+import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
 import 'package:login_token_app/features/feed/presentation/pages/feed_page/feed_page_screen.dart';
 import 'package:login_token_app/features/feed/presentation/pages/add_page/add_page_screen.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
@@ -26,6 +32,36 @@ class _NavBarScreenState extends State<NavBarScreen> {
 
   @override
   Widget build(BuildContext context) {
+    BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) async {
+        if (state is RenewRefreshtokenState) {
+          final value = await showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text("log out"),
+                  actions: [
+                    CustomButton(
+                      text: "Ok",
+                      onTap: () {
+                        context.read<AuthBloc>().add(
+                              const SignOutEvent(),
+                            );
+
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SplashScreen()),
+                          (Route<dynamic> route) => false,
+                        );
+                      },
+                    ),
+                  ],
+                );
+              });
+        }
+      },
+    );
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         elevation: 1,

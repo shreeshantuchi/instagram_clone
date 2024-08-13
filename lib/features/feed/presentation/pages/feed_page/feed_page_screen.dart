@@ -40,6 +40,7 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: BlocListener<UserManagementBloc, UserManagementState>(
         listener: (event, state) async {
@@ -73,6 +74,7 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
         },
         child: scaffoldBody(context),
       ),
+
     );
   }
 }

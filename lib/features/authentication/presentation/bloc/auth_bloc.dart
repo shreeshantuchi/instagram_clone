@@ -47,5 +47,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await signOutUseCase.call();
       emit(const OnLogInUnAuthenticatedState());
     });
+
+    on<RefereshTokenExpiredEvent>((event, emit) {
+      emit(const RenewRefreshtokenState());
+    });
   }
 }

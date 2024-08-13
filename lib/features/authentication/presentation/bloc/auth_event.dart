@@ -31,3 +31,7 @@ class SignOutEvent extends AuthEvent {
 class AppStartEvent extends AuthEvent {
   const AppStartEvent();
 }
+
+class RefereshTokenExpiredEvent extends AuthEvent {
+  const RefereshTokenExpiredEvent();
+}

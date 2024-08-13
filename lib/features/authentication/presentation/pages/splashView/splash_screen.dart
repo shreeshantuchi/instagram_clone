@@ -47,6 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
       builder: (context, state) {
+        print(state);
         switch (state) {
           case OnAuthLoadingState():
             return const LoadingIndicator(text: "Loading");
@@ -58,7 +59,8 @@ class _SplashScreenState extends State<SplashScreen> {
             return const LoginView();
           case OnLogInUnAuthenticatedState():
             return const LoginView();
-
+          case RenewRefreshtokenState():
+            return const LoginView();
           default:
             return const LoadingIndicator(text: "Initializing");
         }
