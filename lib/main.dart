@@ -11,6 +11,7 @@ import 'package:login_token_app/features/feed/feed_injection_container.dart';
 import 'package:login_token_app/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   final feedBloc = await createFeedBloc();
   final authBloc = await createAuthBloc();
@@ -49,9 +50,10 @@ class MyApp extends StatelessWidget {
         splitScreenMode: true,
         builder: (context, child) {
           return MaterialApp(
+            navigatorKey: navigatorKey,
             home: const SplashScreen(),
             title: 'Flutter Demo',
-            theme: AppTheme.lightTheme.copyWith(textTheme: instagramTextTheme),
+            theme: AppTheme.lightTheme,
           );
         },
       ),

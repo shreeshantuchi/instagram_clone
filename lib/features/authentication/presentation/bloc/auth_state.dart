@@ -47,3 +47,7 @@ class OnSignUpFailureState extends AuthState {
 class OnSignUpSuccessState extends AuthState {
   const OnSignUpSuccessState() : super(null, '');
 }
+
+class RenewRefreshtokenState extends AuthState {
+  const RenewRefreshtokenState() : super(null, '');
+}
