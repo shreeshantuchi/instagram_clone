@@ -77,66 +77,80 @@ class _PostListState extends State<PostList> {
                 opacity: opacity,
                 child: Padding(
                   padding: const EdgeInsets.only(left: 10),
-                  child: GestureDetector(
-                    onTap: () async {
-                      await showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: const Text("log out"),
-                              actions: [
-                                CustomButton(
-                                  text: "Ok",
-                                  onTap: () {
-                                    context.read<AuthBloc>().add(
-                                          const SignOutEvent(),
-                                        );
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: const Text("log out"),
+                                  actions: [
+                                    CustomButton(
+                                      text: "Ok",
+                                      onTap: () {
+                                        context.read<AuthBloc>().add(
+                                              const SignOutEvent(),
+                                            );
 
-                                    Navigator.pushAndRemoveUntil(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const SplashScreen()),
-                                      (Route<dynamic> route) => false,
-                                    );
-                                  },
-                                ),
-                              ],
-                            );
-                          });
-                    },
-                    child: Row(
-                      children: [
-                        Text(
-                          "Instagram",
-                          style: instagramHeading.copyWith(
-                            fontSize: 35.sp,
-                            color: Colors.black.withOpacity(opacity),
+                                        Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const SplashScreen()),
+                                          (Route<dynamic> route) => false,
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                );
+                              });
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              "Instagram",
+                              style: instagramHeading.copyWith(
+                                fontSize: 35.sp,
+                                color: Colors.black.withOpacity(opacity),
+                              ),
+                            ),
+                            SizedBox(width: 5.w),
+                            Padding(
+                              padding: EdgeInsets.only(top: 3.h),
+                              child: Icon(
+                                PhosphorIconsRegular.caretDown,
+                                size: 14.sp,
+                                color: Colors.black.withOpacity(opacity),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: SizedBox(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(
+                                PhosphorIconsRegular.heart,
+                                size: 24.sp,
+                                color: Colors.black.withOpacity(opacity),
+                              ),
+                              SizedBox(
+                                width: 10.w,
+                              ),
+                              Icon(
+                                PhosphorIconsRegular.messengerLogo,
+                                size: 24.sp,
+                                color: Colors.black.withOpacity(opacity),
+                              ),
+                            ],
                           ),
                         ),
-                        SizedBox(width: 5.w),
-                        Padding(
-                          padding: EdgeInsets.only(top: 3.h),
-                          child: Icon(
-                            PhosphorIconsRegular.caretDown,
-                            size: 14.sp,
-                            color: Colors.black.withOpacity(opacity),
-                          ),
-                        ),
-                        SizedBox(width: 100.w),
-                        Icon(
-                          PhosphorIconsRegular.heart,
-                          size: 24.sp,
-                          color: Colors.black.withOpacity(opacity),
-                        ),
-                        SizedBox(width: 10.w),
-                        Icon(
-                          PhosphorIconsRegular.messengerLogo,
-                          size: 24.sp,
-                          color: Colors.black.withOpacity(opacity),
-                        ),
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ),
               ),
