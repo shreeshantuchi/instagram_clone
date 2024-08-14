@@ -15,26 +15,37 @@ class PostItem extends StatefulWidget {
   State<PostItem> createState() => _PostItemState();
 }
 
-class _PostItemState extends State<PostItem> {
+class _PostItemState extends State<PostItem>
+    with AutomaticKeepAliveClientMixin {
   int current = 0;
   final CarouselSliderController _controller = CarouselSliderController();
-  final ValueNotifier<Color> _heartColor =
-      ValueNotifier<Color>(Colors.black); // Add this line
-  final ValueNotifier<bool> isHeart = ValueNotifier<bool>(false);
+  final ValueNotifier<Color> _heartColor = ValueNotifier<Color>(Colors.black);
+  late ValueNotifier<bool> isHeart;
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void dispose() {
-    _heartColor.dispose(); // Dispose the ValueNotifier
+    _heartColor.dispose();
+    isHeart.dispose();
     super.dispose();
   }
 
+  @override
+  void initState() {
+    super.initState();
+    isHeart = ValueNotifier<bool>(false);
+  }
+
   void _changeHeartColor() {
-    _heartColor.value =
-        InstagramColors.likeColor; // Change the color or any logic you prefer
+    _heartColor.value = InstagramColors.likeColor;
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(
+        context); // Ensures the state is retained when using AutomaticKeepAliveClientMixin
     return ListTile(
       contentPadding: EdgeInsets.zero,
       title: Column(
@@ -59,11 +70,11 @@ class _PostItemState extends State<PostItem> {
                   children: [
                     Text(
                       widget.post.username.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       widget.post.username.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -89,25 +100,24 @@ class _PostItemState extends State<PostItem> {
                       builder: (BuildContext context) {
                         return HeartOverImage(
                           imageUrl: i,
-                          onAnimationEnd:
-                              _changeHeartColor, // Pass the callback
+                          onAnimationEnd: _changeHeartColor,
                           heartColorNotifier: _heartColor,
-                          isHeartVisible: isHeart, // Pass the ValueNotifier
+                          isHeartVisible: isHeart,
                         );
                       },
                     );
                   }).toList(),
                 )
-              : Container(height: 200.h, width: double.infinity),
+              : SizedBox(height: 200.h, width: double.infinity),
           widget.post.postUrl!.isNotEmpty
               ? ActionRow(
                   isHeartVisible: isHeart,
                   widget: widget,
                   current: current,
                   controller: _controller,
-                  heartColorNotifier: _heartColor, // Pass the ValueNotifier
+                  heartColorNotifier: _heartColor,
                 )
-              : SizedBox.shrink(),
+              : const SizedBox.shrink(),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
             child: Column(
@@ -115,7 +125,7 @@ class _PostItemState extends State<PostItem> {
               children: [
                 Text(
                   widget.post.username.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 Text(widget.post.description.toString()),

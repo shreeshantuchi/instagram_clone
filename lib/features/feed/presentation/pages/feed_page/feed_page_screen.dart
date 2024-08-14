@@ -40,7 +40,6 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: BlocListener<UserManagementBloc, UserManagementState>(
         listener: (event, state) async {
@@ -74,7 +73,6 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
         },
         child: scaffoldBody(context),
       ),
-
     );
   }
 }
@@ -84,24 +82,7 @@ Scaffold scaffoldBody(BuildContext context) {
       backgroundColor: InstagramColors.foregroundColor,
 
       // bottomNavigationBar: const NavBarScreen(),
-      drawer: Drawer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Column(
-              children: [],
-            ),
-            CustomButton(
-              text: "Sign Out",
-              onTap: () {
-                context.read<AuthBloc>().add(
-                      const SignOutEvent(),
-                    );
-              },
-            )
-          ],
-        ),
-      ),
+
       body: BlocConsumer<FeedBloc, FeedState>(
         listener: (context, state) async {
           if (state is FeedRetrivalFailureState) {
