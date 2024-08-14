@@ -34,9 +34,11 @@ class _NavBarScreenState extends State<NavBarScreen> {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
+        bool value = false;
         print(state);
         if (state is RenewRefreshtokenState) {
-          var value = await showDialog(
+          await showDialog(
+              barrierDismissible: false,
               context: context,
               builder: (context) {
                 return AlertDialog(
@@ -45,17 +47,16 @@ class _NavBarScreenState extends State<NavBarScreen> {
                     CustomButton(
                       text: "Ok",
                       onTap: () {
+                        value = true;
                         context.read<AuthBloc>().add(
                               const SignOutEvent(),
                             );
-
                         Navigator.pop(context);
                       },
                     ),
                   ],
                 );
               });
-          print(value);
         }
       },
       child: Scaffold(
