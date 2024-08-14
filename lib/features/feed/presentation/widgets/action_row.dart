@@ -39,6 +39,7 @@ class ActionRow extends StatelessWidget {
                       ValueListenableBuilder<Color>(
                         valueListenable: heartColorNotifier,
                         builder: (context, heartColor, child) {
+                          print(isHeartVisible.value);
                           return Icon(
                             isHeartVisible.value
                                 ? PhosphorIconsFill.heart

@@ -19,6 +19,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         try {
           final user = await loginUseCase.call(event.data);
           if (user != null) {
+            print(user.accessToken);
             emit(const OnAppStartLogInAuthenticatedState());
           } else {
             emit(const OnLogInUnAuthenticatedState());
@@ -33,6 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       try {
         final user = await getStoredTokensUseCase.call();
         if (user != null) {
+          print(user.accessToken);
           emit(const OnAppStartLogInAuthenticatedState());
         } else {
           emit(const OnLogInUnAuthenticatedState());
