@@ -41,38 +41,7 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: BlocListener<UserManagementBloc, UserManagementState>(
-        listener: (event, state) async {
-          print(state);
-          if (state is OnUserRetrivedFailureState) {
-            await showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text("log out"),
-                    actions: [
-                      CustomButton(
-                        text: "Ok",
-                        onTap: () {
-                          context.read<AuthBloc>().add(
-                                const SignOutEvent(),
-                              );
-
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SplashScreen()),
-                            (Route<dynamic> route) => false,
-                          );
-                        },
-                      ),
-                    ],
-                  );
-                });
-          }
-        },
-        child: scaffoldBody(context),
-      ),
+      child: scaffoldBody(context),
     );
   }
 }

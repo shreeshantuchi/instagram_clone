@@ -59,8 +59,7 @@ class _SplashScreenState extends State<SplashScreen> {
             return const LoginView();
           case OnLogInUnAuthenticatedState():
             return const LoginView();
-          case RenewRefreshtokenState():
-            return const LoginView();
+
           default:
             return const LoadingIndicator(text: "Initializing");
         }

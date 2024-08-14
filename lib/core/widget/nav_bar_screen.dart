@@ -32,14 +32,15 @@ class _NavBarScreenState extends State<NavBarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    BlocListener<AuthBloc, AuthState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) async {
+        print(state);
         if (state is RenewRefreshtokenState) {
-          final value = await showDialog(
+          var value = await showDialog(
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: const Text("log out"),
+                  title: const Text("Logged out"),
                   actions: [
                     CustomButton(
                       text: "Ok",
@@ -48,60 +49,56 @@ class _NavBarScreenState extends State<NavBarScreen> {
                               const SignOutEvent(),
                             );
 
-                        Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SplashScreen()),
-                          (Route<dynamic> route) => false,
-                        );
+                        Navigator.pop(context);
                       },
                     ),
                   ],
                 );
               });
+          print(value);
         }
       },
-    );
-    return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        elevation: 1,
-        color: Colors.white,
-        child: SizedBox(
-          height: 60.h,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildNavItem(
-                  currentIndex == 0
-                      ? PhosphorIconsFill.house
-                      : PhosphorIconsRegular.house,
-                  0),
-              _buildNavItem(
-                  currentIndex == 1
-                      ? PhosphorIconsBold.magnifyingGlass
-                      : PhosphorIconsRegular.magnifyingGlass,
-                  1),
-              _buildNavItem(
-                  currentIndex == 2
-                      ? PhosphorIconsFill.plusSquare
-                      : PhosphorIconsRegular.plusSquare,
-                  2),
-              _buildNavItem(
-                  currentIndex == 3
-                      ? PhosphorIconsFill.video
-                      : PhosphorIconsRegular.video,
-                  3),
-              CircleAvatar(
-                radius: 11.r,
-                backgroundColor: InstagramColors.foregroundColor,
-                backgroundImage: const NetworkImage(
-                    'https://imgs.search.brave.com/xJNs3Y0-T1-uTatUxa9yvG5oIyoorhWV4OsjepTe3x0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9w/ZXJzb24taG9sZGlu/Zy1jdXAtY29mZmVl/XzIzLTIxNTA2OTg3/MDMuanBnP3NpemU9/NjI2JmV4dD1qcGc'),
-              ),
-            ],
+      child: Scaffold(
+        bottomNavigationBar: BottomAppBar(
+          elevation: 1,
+          color: Colors.white,
+          child: SizedBox(
+            height: 60.h,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                _buildNavItem(
+                    currentIndex == 0
+                        ? PhosphorIconsFill.house
+                        : PhosphorIconsRegular.house,
+                    0),
+                _buildNavItem(
+                    currentIndex == 1
+                        ? PhosphorIconsBold.magnifyingGlass
+                        : PhosphorIconsRegular.magnifyingGlass,
+                    1),
+                _buildNavItem(
+                    currentIndex == 2
+                        ? PhosphorIconsFill.plusSquare
+                        : PhosphorIconsRegular.plusSquare,
+                    2),
+                _buildNavItem(
+                    currentIndex == 3
+                        ? PhosphorIconsFill.video
+                        : PhosphorIconsRegular.video,
+                    3),
+                CircleAvatar(
+                  radius: 11.r,
+                  backgroundColor: InstagramColors.foregroundColor,
+                  backgroundImage: const NetworkImage(
+                      'https://imgs.search.brave.com/xJNs3Y0-T1-uTatUxa9yvG5oIyoorhWV4OsjepTe3x0/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/ZnJlZS1waG90by9w/ZXJzb24taG9sZGlu/Zy1jdXAtY29mZmVl/XzIzLTIxNTA2OTg3/MDMuanBnP3NpemU9/NjI2JmV4dD1qcGc'),
+                ),
+              ],
+            ),
           ),
         ),
+        body: screens[currentIndex],
       ),
-      body: screens[currentIndex],
     );
   }
 
