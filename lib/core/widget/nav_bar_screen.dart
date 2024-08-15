@@ -8,7 +8,6 @@ import 'package:login_token_app/features/authentication/presentation/bloc/auth_e
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_state.dart';
 
 import 'package:login_token_app/features/authentication/presentation/pages/reels_page/reels_page_screen.dart';
-import 'package:login_token_app/features/authentication/presentation/pages/splashView/splash_screen.dart';
 import 'package:login_token_app/features/feed/presentation/pages/feed_page/feed_page_screen.dart';
 import 'package:login_token_app/features/feed/presentation/pages/add_page/add_page_screen.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
