@@ -4,17 +4,14 @@ class Post {
   final String? description;
   final String? userId;
   final String? username;
-  final List? postUrl;
+  final List<String>? postUrl;
 
   Post({
-    required this.postUrl,
-    required this.userId,
-    required this.username,
     required this.postId,
     required this.userUrl,
     required this.description,
+    required this.userId,
+    required this.username,
+    required this.postUrl,
   });
-
-  // @override
-  // List<Object> get props => [postId, userUrl, description, userId, username];
 }

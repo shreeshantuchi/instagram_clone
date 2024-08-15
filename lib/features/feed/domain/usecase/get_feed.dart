@@ -8,10 +8,9 @@ class GetFeed {
 
   Future<List<Post>> call() async {
     try {
-      final feed = await repository.getFeed();
-      return feed;
+      return await repository.getFeed();
     } catch (e) {
-      rethrow;
+      throw Exception("Failed to get feed: $e");
     }
   }
 }

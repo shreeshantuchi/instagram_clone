@@ -8,27 +8,27 @@ class PostModel extends Post {
     required super.userId,
     required super.username,
     required super.postUrl,
-  }) : super(
-          description: postCaption,
-        );
+  }) : super(description: postCaption);
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
     return PostModel(
-        postId: json['productId'].toString(),
-        userUrl: json['userImage'],
-        postCaption: json['caption'],
-        userId: json['user_id'],
-        username: json['userName'],
-        postUrl: json['imageList']);
+      postId: json['postId'].toString(),
+      userUrl: json['userUrl'],
+      postCaption: json['description'],
+      userId: json['userId'],
+      username: json['username'],
+      postUrl: List<String>.from(json['postUrl']),
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'postId': postId,
-      'imageUrl': userUrl,
+      'userUrl': userUrl,
       'description': description,
       'userId': userId,
       'username': username,
+      'postUrl': postUrl,
     };
   }
 }
