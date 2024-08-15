@@ -47,7 +47,6 @@ dependencies:
   dartz: ^0.10.1
   cloud_firestore: ^4.14.0
 
-  cloud_firestore: ^4.14.0
   firebase_auth: ^4.16.0
 
 dev_dependencies:
@@ -95,7 +94,7 @@ flutter:
       
     - family: Proxima
       fonts:
-        - asset: assets/fonts/Proxima.ttf
+        - asset: assets/fonts/Proxima.otf
        
   #
   # For details regarding fonts from package dependencies,
