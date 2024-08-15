@@ -1,9 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:login_token_app/features/authentication/data/models/auth_token_model.dart';
+import 'package:login_token_app/features/authentication/domain/enitites/user_entity.dart';
 
 @immutable
 abstract class AuthState {
-  final AuthTokenModel? user;
+  final UserEntity? user;
   final String? error;
   const AuthState(this.user, this.error);
 }
@@ -17,13 +18,14 @@ class OnAuthLoadingState extends AuthState {
 }
 
 class OnLogInAuthenticatedState extends AuthState {
-  final AuthTokenModel userSuccess;
-
+  final UserEntity userSuccess;
   const OnLogInAuthenticatedState(this.userSuccess) : super(userSuccess, null);
 }
 
 class OnAppStartLogInAuthenticatedState extends AuthState {
-  const OnAppStartLogInAuthenticatedState() : super(null, null);
+  final UserEntity userSuccess;
+  const OnAppStartLogInAuthenticatedState({required this.userSuccess})
+      : super(null, null);
 }
 
 class OnLogInUnAuthenticatedState extends AuthState {
@@ -45,7 +47,8 @@ class OnSignUpFailureState extends AuthState {
 }
 
 class OnSignUpSuccessState extends AuthState {
-  const OnSignUpSuccessState() : super(null, '');
+  final UserEntity userSuccess;
+  const OnSignUpSuccessState(this.userSuccess) : super(null, '');
 }
 
 class RenewRefreshtokenState extends AuthState {

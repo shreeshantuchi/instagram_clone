@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,9 +13,14 @@ import 'package:login_token_app/core/theme/theme.dart';
 import 'package:login_token_app/features/feed/feed_injection_container.dart';
 import 'package:login_token_app/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
+import 'package:login_token_app/firebase_options.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final feedBloc = await createFeedBloc();
   final authBloc = await createAuthBloc();
   runApp(MyApp(
@@ -37,7 +43,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     // Set the status bar color and icon brightness
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // Make the status bar transparent
       statusBarIconBrightness:
           Brightness.dark, // Dark icons for light background
@@ -69,11 +75,8 @@ class _MyAppState extends State<MyApp> {
         splitScreenMode: true,
         builder: (context, child) {
           return MaterialApp(
-
             navigatorKey: navigatorKey,
-
             debugShowCheckedModeBanner: false,
-
             home: const SplashScreen(),
             title: 'Flutter Demo',
             theme: AppTheme.lightTheme,
