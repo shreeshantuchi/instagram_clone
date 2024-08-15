@@ -94,7 +94,7 @@ flutter:
       
     - family: Proxima
       fonts:
-        - asset: assets/fonts/Proxima.otf
+        - asset: assets/fonts/Proxima.ttf
        
   #
   # For details regarding fonts from package dependencies,
