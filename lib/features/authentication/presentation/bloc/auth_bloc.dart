@@ -1,29 +1,45 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:login_token_app/features/authentication/domain/usecase/login_use_case_firebase.dart';
 import 'package:login_token_app/features/authentication/domain/usecase/login_use_cases.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final LoginUseCase loginUseCase;
-  final GetStoredTokensUseCase getStoredTokensUseCase;
-  final SignOutUseCase signOutUseCase;
+  //final LoginUseCase loginUseCase;
+  final FirebaseLoginUseCase loginUseCase;
+  final FirebaseCurrentUserUseCase getCurrentUserUseCase;
+  final FirebaseSignOutUseCase signOutUseCase;
+  final FirebaseSignUpUseCase signUpUseCase;
 
   AuthBloc({
+    required this.signUpUseCase,
     required this.loginUseCase,
-    required this.getStoredTokensUseCase,
+    required this.getCurrentUserUseCase,
     required this.signOutUseCase,
   }) : super(const OnAuthInitialState()) {
     on<LoginEvent>(
       (event, emit) async {
         emit(const OnAuthLoadingState());
         try {
-          final user = await loginUseCase.call(event.data);
-          if (user != null) {
-            print(user.accessToken);
-            emit(const OnAppStartLogInAuthenticatedState());
-          } else {
-            emit(const OnLogInUnAuthenticatedState());
-          }
+          //final user = await loginUseCase.call(event.data);
+          final user = await loginUseCase.call(event.email, event.password);
+          emit(OnAppStartLogInAuthenticatedState(userSuccess: user));
+        } catch (e) {
+          emit(const OnLoginFailureState(error: "Unable to Login"));
+        }
+      },
+    );
+
+    on<SignUpEvent>(
+      (event, emit) async {
+        emit(const OnAuthLoadingState());
+        try {
+          emit(const OnAuthLoadingState());
+          //final user = await loginUseCase.call(event.data);
+          final user = await signUpUseCase.call(event.email, event.password);
+          print("user:::::::::: $user");
+          emit(OnAppStartLogInAuthenticatedState(userSuccess: user));
         } catch (e) {
           emit(const OnLoginFailureState(error: "Unable to Login"));
         }
@@ -32,13 +48,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AppStartEvent>((event, emit) async {
       try {
-        final user = await getStoredTokensUseCase.call();
-        if (user != null) {
-          print(user.accessToken);
-          emit(const OnAppStartLogInAuthenticatedState());
-        } else {
-          emit(const OnLogInUnAuthenticatedState());
-        }
+        final user = getCurrentUserUseCase.call();
+
+        emit(OnAppStartLogInAuthenticatedState(userSuccess: user));
       } catch (e) {
         emit(const OnLogInUnAuthenticatedState());
       }
