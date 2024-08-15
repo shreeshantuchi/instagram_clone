@@ -47,6 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
         }
       },
       builder: (context, state) {
+        print(state);
         switch (state) {
           case OnAuthLoadingState():
             return const LoadingIndicator(text: "Loading");

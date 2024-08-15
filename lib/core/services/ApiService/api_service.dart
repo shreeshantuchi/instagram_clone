@@ -1,8 +1,14 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart';
 import 'package:login_token_app/core/constants/client_detials.dart';
 import 'package:login_token_app/core/constants/url/app_urls.dart';
 import 'package:login_token_app/core/services/sharedPreference/shared_preference_service.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
+import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
+import 'package:login_token_app/main.dart';
 
 class ApiService {
   SharedPreferencesService sharedPreferencesService =
@@ -36,14 +42,14 @@ class ApiService {
 
   Future<Map<String, dynamic>?> sendGetRequest(
       String accessToken, String url) async {
-    final response = await http.get(
+    Response response = await http.get(
       Uri.parse(url),
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $accessToken'
       },
     );
-
+    //print(response.statusCode);
     switch (response.statusCode) {
       case 200:
         Map<String, dynamic> data = json.decode(response.body);
@@ -52,7 +58,10 @@ class ApiService {
       case 401:
         Map<String, dynamic>? newData = await refreshAccessToken();
         if (newData != null) {
-          sendGetRequest(newData["access_token"], url);
+          sendGetRequest(
+            newData["access_token"],
+            url,
+          );
         } else {
           return null;
         }
@@ -66,7 +75,7 @@ class ApiService {
 
   Future<Map<String, dynamic>?> refreshAccessToken() async {
     final refreshToken = await sharedPreferencesService.getRefreshToken();
-    final response = await http.post(
+    Response? response = await http.post(
       Uri.parse(baseUrl + renewRefreshTokenEndPoint),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
@@ -76,6 +85,7 @@ class ApiService {
         "grant_type": "refresh_token"
       }),
     );
+    print(response.statusCode);
     if (response.statusCode == 200) {
       final newAccessToken = json.decode(response.body)['access_token'];
       final newRefreshToken = json.decode(response.body)['refresh_token'];
@@ -83,6 +93,8 @@ class ApiService {
       await sharedPreferencesService.saveRefreshToken(newRefreshToken);
       return json.decode(response.body);
     } else {
+      BlocProvider.of<AuthBloc>(navigatorKey.currentState!.context)
+          .add(const RefereshTokenExpiredEvent());
       return null;
     }
   }

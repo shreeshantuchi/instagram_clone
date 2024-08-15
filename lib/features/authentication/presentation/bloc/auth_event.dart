@@ -8,12 +8,10 @@ abstract class AuthEvent {
 class LoginEvent extends AuthEvent {
   final String email;
   final String password;
-  final Map<String, dynamic> data;
 
   const LoginEvent({
     required this.email,
     required this.password,
-    required this.data,
   });
 }
 
@@ -30,4 +28,8 @@ class SignOutEvent extends AuthEvent {
 
 class AppStartEvent extends AuthEvent {
   const AppStartEvent();
+}
+
+class RefereshTokenExpiredEvent extends AuthEvent {
+  const RefereshTokenExpiredEvent();
 }

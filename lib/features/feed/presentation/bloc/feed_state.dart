@@ -14,6 +14,8 @@ class FeedLoadedState extends FeedState {
 
 class FeedRetrivalFailureState extends FeedState {}
 
+class FeedRetrivalFailureState extends FeedState {}
+
 //loading
 class PostCreationLoadingState extends FeedState {}
 

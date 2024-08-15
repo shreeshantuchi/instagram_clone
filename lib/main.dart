@@ -1,6 +1,9 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:login_token_app/core/theme/app_pallet.dart';
 import 'package:login_token_app/features/authentication/auth_injection_container.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_bloc.dart';
 import 'package:login_token_app/features/authentication/presentation/bloc/auth_event.dart';
@@ -10,8 +13,14 @@ import 'package:login_token_app/core/theme/theme.dart';
 import 'package:login_token_app/features/feed/feed_injection_container.dart';
 import 'package:login_token_app/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
+import 'package:login_token_app/firebase_options.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final feedBloc = await createFeedBloc();
   final authBloc = await createAuthBloc();
   runApp(MyApp(
@@ -20,10 +29,27 @@ void main() async {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   final FeedBloc feedBloc;
   final AuthBloc authBloc;
   const MyApp({super.key, required this.feedBloc, required this.authBloc});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Set the status bar color and icon brightness
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent, // Make the status bar transparent
+      statusBarIconBrightness:
+          Brightness.dark, // Dark icons for light background
+      statusBarBrightness: Brightness.light, // Light status bar (for iOS)
+    ));
+  }
 
   // This widget is the root of your application.
   @override
@@ -31,13 +57,13 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
-          create: (context) => authBloc
+          create: (context) => widget.authBloc
             ..add(
               const AppStartEvent(),
             ),
         ),
         BlocProvider<FeedBloc>(
-          create: (context) => feedBloc,
+          create: (context) => widget.feedBloc,
         ),
         BlocProvider<UserManagementBloc>(
           create: (context) => UserManagementBloc(),
@@ -49,9 +75,11 @@ class MyApp extends StatelessWidget {
         splitScreenMode: true,
         builder: (context, child) {
           return MaterialApp(
+            navigatorKey: navigatorKey,
+            debugShowCheckedModeBanner: false,
             home: const SplashScreen(),
             title: 'Flutter Demo',
-            theme: AppTheme.lightTheme.copyWith(textTheme: instagramTextTheme),
+            theme: AppTheme.lightTheme,
           );
         },
       ),
