@@ -6,6 +6,9 @@ import 'package:login_token_app/features/authentication/presentation/bloc/auth_s
 import 'package:login_token_app/features/authentication/presentation/pages/loginView/login_view.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
 import 'package:login_token_app/core/widget/loading_indicator.dart';
+import 'package:login_token_app/features/feed/presentation/pages/dashBoard/main_dashboard_screen.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_bloc.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_event.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -42,6 +45,9 @@ class _SplashScreenState extends State<SplashScreen> {
             );
             ScaffoldMessenger.of(context).showSnackBar(snackbar);
             break;
+          case OnSignUpSuccessState():
+            context.read<UserManagementBloc>().add(const SetProfileEvent());
+
           default:
             break;
         }
@@ -52,13 +58,15 @@ class _SplashScreenState extends State<SplashScreen> {
           case OnAuthLoadingState():
             return const LoadingIndicator(text: "Loading");
           case OnLogInAuthenticatedState():
-            return const NavBarScreen();
+            return const DashBoardPage();
           case OnAppStartLogInAuthenticatedState():
-            return const NavBarScreen();
+            return const DashBoardPage();
           case OnLoginFailureState():
             return const LoginView();
           case OnLogInUnAuthenticatedState():
             return const LoginView();
+          case OnSignUpSuccessState():
+            return const DashBoardPage();
 
           default:
             return const LoadingIndicator(text: "Initializing");

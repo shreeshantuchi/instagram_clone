@@ -1,5 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:login_token_app/features/authentication/data/models/user_model.dart';
+import 'package:login_token_app/features/authentication/data/models/user.dart';
 
 abstract class FirebaseAUthDataSource {
   Future<UserModel> login(String email, String password);
@@ -8,7 +9,6 @@ abstract class FirebaseAUthDataSource {
 
   Future<void> signout();
   Future<void> verifyEmail();
-  Future<void> updateUser(UserModel user);
 }
 
 class FirebaseAUthDataSourceImpl implements FirebaseAUthDataSource {
@@ -38,11 +38,6 @@ class FirebaseAUthDataSourceImpl implements FirebaseAUthDataSource {
   }
 
   @override
-  Future<void> updateUser(UserModel user) {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> verifyEmail() async {
     User? user = firebase.currentUser;
     if (user != null) {
@@ -58,9 +53,16 @@ class FirebaseAUthDataSourceImpl implements FirebaseAUthDataSource {
       final firebaseCredentiaL = await firebase.createUserWithEmailAndPassword(
           email: email, password: password);
       final user = firebaseCredentiaL.user;
+
       //print(user);
       if (user != null) {
+        await user.updateDisplayName(email.split("@").first);
         userModel = UserModel.fromFirebaseUser(user);
+
+        await FirebaseFirestore.instance.collection("User").doc(user.uid).set(
+              userModel.toMap(),
+            );
+
         return userModel;
       }
     } catch (e) {
@@ -77,7 +79,5 @@ class FirebaseAUthDataSourceImpl implements FirebaseAUthDataSource {
     } else {
       throw Exception("user doesnt exist");
     }
-    // TODO: implement getCurrentuser
-    throw UnimplementedError();
   }
 }

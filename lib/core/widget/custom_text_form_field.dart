@@ -10,8 +10,10 @@ class CustomTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final Key? formKey;
   final VoidCallback? onTap;
+  final void Function(String)? onChanged;
   final double? contentPadding;
   final double? borderRadius;
+  final IconData? leadingIcon;
   const CustomTextFormField({
     super.key,
     required this.hintText,
@@ -24,11 +26,14 @@ class CustomTextFormField extends StatelessWidget {
     this.onTap,
     this.contentPadding,
     this.borderRadius,
+    this.leadingIcon,
+    this.onChanged,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      onChanged: onChanged,
       onTap: onTap,
       validator: validator,
       style: Theme.of(context).textTheme.labelSmall,
@@ -37,6 +42,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       obscureText: onScureText != null ? onScureText!.value : false,
       decoration: InputDecoration(
+        prefixIcon: leadingIcon != null ? Icon(leadingIcon) : null,
         filled: true,
         fillColor: InstagramColors.textFieldColor,
         contentPadding: contentPadding != null

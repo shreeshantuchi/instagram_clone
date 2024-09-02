@@ -26,17 +26,20 @@ import 'package:login_token_app/features/feed/data/datasources/feed_remote_datas
 import 'package:login_token_app/features/feed/data/repositories/feed_repository_impl.dart';
 import 'package:login_token_app/features/feed/domain/usecase/get_feed.dart';
 import 'package:login_token_app/features/feed/domain/usecase/create_post.dart';
+import 'package:login_token_app/features/feed/domain/usecase/get_user_post.dart';
 import 'package:login_token_app/features/feed/presentation/bloc/feed_bloc.dart';
 
 Future<FeedBloc> createFeedBloc() async {
   final firestore = FirebaseFirestore.instance;
   final remoteDataSource = FeedRemoteDataSourceImpl(firestore: firestore);
 
-  final remoteRepository = FeedRepositoryImpl(
-      remoteDataSource: remoteDataSource, firestore: firestore);
+  final remoteRepository =
+      FeedRepositoryImpl(remoteDataSource: remoteDataSource);
 
   final getFeed = GetFeed(repository: remoteRepository);
   final createPost = CreatePost(repository: remoteRepository);
+  final getUserFeed = GetUserPost(repository: remoteRepository);
 
-  return FeedBloc(getFeed: getFeed, createPost: createPost);
+  return FeedBloc(
+      getFeed: getFeed, createPost: createPost, getUserFeed: getUserFeed);
 }

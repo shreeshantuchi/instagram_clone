@@ -1,8 +1,5 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:login_token_app/features/authentication/data/datasourse/auth_remote_repository.dart';
-import 'package:login_token_app/features/authentication/data/datasourse/firebase_data_source.dart';
 import 'package:login_token_app/features/authentication/data/models/auth_token_model.dart';
-import 'package:login_token_app/features/authentication/data/models/user_model.dart';
 import 'package:login_token_app/features/authentication/domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {

@@ -4,32 +4,44 @@ import 'package:login_token_app/core/theme/app_pallet.dart';
 import 'package:login_token_app/core/theme/text_thme.dart';
 
 class CustomButton extends StatelessWidget {
-  final Color color;
+  final Color backgroundColor;
+  final Color textColor;
+  final double radius;
   final String text;
   final double width;
+  final double height;
   final VoidCallback onTap;
-  const CustomButton(
-      {super.key,
-      this.color = AppPallet.blueColor,
-      required this.text,
-      this.width = double.infinity,
-      required this.onTap});
+  final EdgeInsetsGeometry contentPadding;
+  const CustomButton({
+    super.key,
+    this.height = 50,
+    this.backgroundColor = AppPallet.blueColor,
+    required this.text,
+    this.width = double.infinity,
+    required this.onTap,
+    this.contentPadding =
+        const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+    this.textColor = Colors.white,
+    this.radius = 10,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
+        height: height.h,
         width: width.w,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.sp), color: color),
+            borderRadius: BorderRadius.circular(radius.r),
+            color: backgroundColor),
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
+            padding: contentPadding,
             child: Text(
               text,
               style: instagramTextTheme.bodyMedium!
-                  .copyWith(color: Colors.white, fontWeight: FontWeight.bold),
+                  .copyWith(color: textColor, fontWeight: FontWeight.bold),
             ),
           ),
         ),

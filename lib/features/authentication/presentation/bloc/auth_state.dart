@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:login_token_app/features/authentication/data/models/auth_token_model.dart';
 import 'package:login_token_app/features/authentication/domain/enitites/user_entity.dart';
+import 'package:login_token_app/features/userManagement/domain/entity/profile_entity.dart';
 
 @immutable
 abstract class AuthState {
@@ -25,7 +26,7 @@ class OnLogInAuthenticatedState extends AuthState {
 class OnAppStartLogInAuthenticatedState extends AuthState {
   final UserEntity userSuccess;
   const OnAppStartLogInAuthenticatedState({required this.userSuccess})
-      : super(null, null);
+      : super(userSuccess, null);
 }
 
 class OnLogInUnAuthenticatedState extends AuthState {
@@ -48,7 +49,7 @@ class OnSignUpFailureState extends AuthState {
 
 class OnSignUpSuccessState extends AuthState {
   final UserEntity userSuccess;
-  const OnSignUpSuccessState(this.userSuccess) : super(null, '');
+  const OnSignUpSuccessState(this.userSuccess) : super(userSuccess, '');
 }
 
 class RenewRefreshtokenState extends AuthState {

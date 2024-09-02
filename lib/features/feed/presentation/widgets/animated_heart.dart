@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
+import 'package:login_token_app/features/feed/domain/entities/post.dart';
+import 'package:login_token_app/features/like/like_services.dart';
+import 'package:login_token_app/features/userManagement/data/model/profile_model.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_bloc.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_event.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_management_state.dart';
 
 class HeartOverImage extends StatefulWidget {
   final String imageUrl;
   final VoidCallback? onAnimationEnd;
   final ValueNotifier<Color>? heartColorNotifier;
   final ValueNotifier<bool> isHeartVisible;
+  final Post post;
 
   const HeartOverImage({
     super.key,
@@ -14,6 +22,7 @@ class HeartOverImage extends StatefulWidget {
     this.onAnimationEnd,
     this.heartColorNotifier,
     required this.isHeartVisible,
+    required this.post,
   });
 
   @override
@@ -28,6 +37,7 @@ class _HeartOverImageState extends State<HeartOverImage>
 
   final ValueNotifier<bool> _isHeartVisible = ValueNotifier<bool>(false);
   final ValueNotifier<Offset> _tapPosition = ValueNotifier<Offset>(Offset.zero);
+  LikeServices likeServices = LikeServices();
 
   @override
   void initState() {
@@ -47,15 +57,17 @@ class _HeartOverImageState extends State<HeartOverImage>
     );
   }
 
-  void _showHeart(Offset position) {
+  Future<void> _showHeart(Offset position) async {
     _tapPosition.value = position;
+
     widget.isHeartVisible.value = true;
+    widget.onAnimationEnd!();
     _isHeartVisible.value = true;
-    _controller.forward().then((_) {
+    await _controller.forward().then((_) {
       _isHeartVisible.value = false;
       _controller.reset();
       if (widget.onAnimationEnd != null) {
-        widget.onAnimationEnd!(); // Invoke the callback
+        // Invoke the callback
       }
     });
   }
@@ -70,55 +82,65 @@ class _HeartOverImageState extends State<HeartOverImage>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onDoubleTapDown: (TapDownDetails details) {
-        _showHeart(details.localPosition);
+    print(widget.imageUrl);
+    return BlocListener<UserManagementBloc, UserManagementState>(
+      listener: (context, state) {
+        if (state is OnCurrentUserProfileRetrivedState) {
+          if (widget.isHeartVisible.value) {
+            print("only like");
+            likeServices.likePost(
+              widget.post,
+              ProfileModel.fromProfileEntity(state.profile),
+            );
+          }
+        }
       },
-      child: Stack(
-        children: [
-          // The image widget
-          SizedBox(
-            height: 300.h,
-            width: double.infinity,
-            child: Image.network(
-              widget.imageUrl,
-              fit: BoxFit.cover,
+      child: GestureDetector(
+        onDoubleTapDown: (TapDownDetails details) async {
+          await _showHeart(details.localPosition);
+          context.read<UserManagementBloc>().add(GetCurrentUserEvent());
+        },
+        child: Stack(
+          children: [
+            // The image widget
+            SizedBox(
+              height: 300.h,
+              width: double.infinity,
+              child: Image.network(
+                widget.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          // The animated heart widget
-          ValueListenableBuilder<bool>(
-            valueListenable: _isHeartVisible,
-            builder: (context, isHeartVisible, child) {
-              return isHeartVisible
-                  ? ValueListenableBuilder<Offset>(
-                      valueListenable: _tapPosition,
-                      builder: (context, tapPosition, child) {
-                        return Positioned(
-                          left: tapPosition.dx - 50, // Adjust to center heart
-                          top: tapPosition.dy - 50, // Adjust to center heart
-                          child: FadeTransition(
-                            opacity: _opacityAnimation,
-                            child: ScaleTransition(
-                              scale: _scaleAnimation,
-                              child: ValueListenableBuilder<Color>(
-                                valueListenable: widget.heartColorNotifier!,
-                                builder: (context, heartColor, child) {
-                                  return Icon(
-                                    Icons.favorite,
-                                    color: InstagramColors.likeColor,
-                                    size: 100.0.sp,
-                                  );
-                                },
+            // The animated heart widget
+            ValueListenableBuilder<bool>(
+              valueListenable: _isHeartVisible,
+              builder: (context, isHeartVisible, child) {
+                return isHeartVisible
+                    ? ValueListenableBuilder<Offset>(
+                        valueListenable: _tapPosition,
+                        builder: (context, tapPosition, child) {
+                          return Positioned(
+                            left: tapPosition.dx - 50, // Adjust to center heart
+                            top: tapPosition.dy - 50, // Adjust to center heart
+                            child: FadeTransition(
+                              opacity: _opacityAnimation,
+                              child: ScaleTransition(
+                                scale: _scaleAnimation,
+                                child: Icon(
+                                  Icons.favorite,
+                                  color: InstagramColors.likeColor,
+                                  size: 100.0.sp,
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    )
-                  : SizedBox.shrink(); // Empty widget when not visible
-            },
-          ),
-        ],
+                          );
+                        },
+                      )
+                    : SizedBox.shrink(); // Empty widget when not visible
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,21 +1,40 @@
 {
   "project_info": {
-    "project_number": "650386375386",
-    "project_id": "instagram-b3526",
-    "storage_bucket": "instagram-b3526.appspot.com"
+    "project_number": "363932168351",
+    "project_id": "instagem-clone",
+    "storage_bucket": "instagem-clone.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:650386375386:android:bec52c251b13a7bfa95be3",
+        "mobilesdk_app_id": "1:363932168351:android:45fb31a76024cd9ac832aa",
         "android_client_info": {
-          "package_name": "com.example.login_token_app"
+          "package_name": "com.example.insta"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCzZmY43AUah39-Yq1ZfA_iQugBl4R3a6M"
+          "current_key": "AIzaSyCUA0HyK5-nCDcJOxwuCvqxoof72JGfYFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363932168351:android:5831954e1f1df3adc832aa",
+        "android_client_info": {
+          "package_name": "com.example.login_t"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUA0HyK5-nCDcJOxwuCvqxoof72JGfYFw"
         }
       ],
       "services": {

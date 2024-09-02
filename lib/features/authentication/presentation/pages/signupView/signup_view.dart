@@ -94,8 +94,9 @@ class _SingUpFormState extends State<SingUpForm> {
                 child: const ForgotPasswrod(),
               ),
               CustomButton(
-                color: InstagramColors.buttonColor,
+                backgroundColor: InstagramColors.buttonColor,
                 onTap: () {
+                  Navigator.pop(context);
                   context.read<AuthBloc>().add(
                         SignUpEvent(
                           email: emailController.text,

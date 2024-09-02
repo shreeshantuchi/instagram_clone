@@ -12,6 +12,12 @@ class FeedLoadedState extends FeedState {
   FeedLoadedState({required this.postList});
 }
 
+class UserFeedLoadedState extends FeedState {
+  final List<Post> postList;
+
+  UserFeedLoadedState({required this.postList});
+}
+
 class FeedRetrivalFailureState extends FeedState {}
 
 //loading

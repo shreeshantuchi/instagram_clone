@@ -1,25 +1,36 @@
 import 'package:carousel_slider/carousel_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:login_token_app/core/theme/app_pallet.dart';
+import 'package:login_token_app/features/feed/domain/entities/post.dart';
 import 'package:login_token_app/features/feed/presentation/widgets/post_item.dart';
+import 'package:login_token_app/features/like/like_services.dart';
+import 'package:login_token_app/features/userManagement/data/model/profile_model.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_bloc.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_maanagement_event.dart';
+import 'package:login_token_app/features/userManagement/presentation/bloc/user_management_state.dart';
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class ActionRow extends StatelessWidget {
-  const ActionRow({
+  ActionRow({
     super.key,
     required this.widget,
     required this.current,
     required CarouselSliderController controller,
     required this.heartColorNotifier,
-    required this.isHeartVisible, // Added this line
+    required this.isHeartVisible,
+    required this.post,
+    this.onAnimationEnd, // Added this line
   }) : _controller = controller;
-
+  final VoidCallback? onAnimationEnd;
+  final Post post;
   final PostItem widget;
   final int current;
   final CarouselSliderController _controller;
   final ValueNotifier<Color> heartColorNotifier; //
   final ValueNotifier<bool> isHeartVisible;
+  final LikeServices likeServices = LikeServices();
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +47,47 @@ class ActionRow extends StatelessWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      ValueListenableBuilder<Color>(
-                        valueListenable: heartColorNotifier,
-                        builder: (context, heartColor, child) {
-                          print(isHeartVisible.value);
-                          return Icon(
-                            isHeartVisible.value
-                                ? PhosphorIconsFill.heart
-                                : PhosphorIconsRegular.heart,
-                            size: 24.sp,
-                            color:
-                                heartColor, // Use the color from ValueNotifier
-                          );
+                      BlocListener<UserManagementBloc, UserManagementState>(
+                        listenWhen: (previous, current) => current != previous,
+                        listener: (context, state) async {
+                          if (state is OnCurrentUserProfileRetrivedState) {
+                            print(state);
+                            if (isHeartVisible.value) {
+                              likeServices.likePost(
+                                widget.post,
+                                ProfileModel.fromProfileEntity(state.profile),
+                              );
+                            } else {
+                              likeServices.dislikePost(
+                                widget.post,
+                                ProfileModel.fromProfileEntity(state.profile),
+                              );
+                            }
+                          }
                         },
+                        child: GestureDetector(
+                          onTap: () {
+                            final value = !isHeartVisible.value;
+                            isHeartVisible.value = value;
+                            onAnimationEnd!();
+
+                            context
+                                .read<UserManagementBloc>()
+                                .add(GetCurrentUserEvent());
+                          },
+                          child: ValueListenableBuilder(
+                              valueListenable: isHeartVisible,
+                              builder: (context, value, child) {
+                                return Icon(
+                                  value
+                                      ? PhosphorIconsFill.heart
+                                      : PhosphorIconsRegular.heart,
+                                  size: 24.sp,
+                                  color: heartColorNotifier
+                                      .value, // Use the color from ValueNotifier
+                                );
+                              }),
+                        ),
                       ),
                       Icon(PhosphorIconsRegular.chatCircle, size: 24.sp),
                       Icon(PhosphorIconsRegular.paperPlaneTilt, size: 24.sp),

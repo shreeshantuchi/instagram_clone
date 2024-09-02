@@ -15,9 +15,10 @@ import 'package:login_token_app/features/feed/presentation/bloc/feed_bloc.dart';
 import 'package:login_token_app/features/feed/presentation/bloc/feed_event.dart';
 import 'package:login_token_app/features/feed/presentation/bloc/feed_state.dart';
 import 'package:login_token_app/features/feed/presentation/widgets/post_list.dart';
-import 'package:login_token_app/features/userManagement/bloc/user_maanagement_bloc.dart';
-import 'package:login_token_app/features/userManagement/bloc/user_maanagement_event.dart';
-import 'package:login_token_app/features/userManagement/bloc/user_management_state.dart';
+import 'package:login_token_app/features/messenging/data/model/conversation_model.dart';
+import 'package:login_token_app/features/messenging/presentation/bloc/messageBloc/message_bloc.dart';
+import 'package:login_token_app/features/messenging/presentation/pages/conversation_view/conversation_view.dart';
+
 import 'package:phosphor_flutter/phosphor_flutter.dart';
 
 class FeedPageScreen extends StatefulWidget {
@@ -31,39 +32,39 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
   ApiService apiService = ApiService();
   SharedPreferencesService sharedPreferencesService =
       SharedPreferencesService();
-
-  @override
-  void initState() {
-    //   context.read<UserManagementBloc>().add(const GetUserEvent());
-    context.read<FeedBloc>().add(GetFeedEvent());
-    double count = 0;
-    super.initState();
-    _scrollController.addListener(() {
-      // print(count);
-      if (count < _appBarMaxHeight &&
-          _scrollController.position.userScrollDirection ==
-              ScrollDirection.reverse) {
-        count++;
-      } else if (count >= 0 &&
-          _scrollController.position.userScrollDirection ==
-              ScrollDirection.forward) {
-        count = count - 1;
-        if (count > 20) {
-          count = count - 5;
-        }
-      }
-      ;
-
-      double opacity = 1.0 - (count / _appBarMaxHeight).clamp(0.0, 1.0);
-      appBarOpacity.value = opacity;
-    });
-    super.initState();
-  }
+  Widget? _catchedWidget;
 
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<double> appBarOpacity = ValueNotifier<double>(1.0);
-  final double _appBarMaxHeight =
-      50.0; // Adjust this as per your app bar height
+  final double _appBarMaxHeight = 50.0;
+
+  @override
+  void initState() {
+    context.read<FeedBloc>().add(GetFeedEvent());
+    double count = 0;
+    super.initState();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.userScrollDirection ==
+              ScrollDirection.reverse &&
+          count < _appBarMaxHeight) {
+        count++;
+      } else if (_scrollController.position.userScrollDirection ==
+              ScrollDirection.forward &&
+          count > 0) {
+        count = count > 20 ? count - 5 : count - 1;
+      }
+      appBarOpacity.value = (1.0 - (count / _appBarMaxHeight).clamp(0.0, 1.0));
+    });
+  }
+
+  Future<void> _refreshFeed() async {
+    // Trigger a fresh feed load
+    context.read<FeedBloc>().add(GetFeedEvent());
+
+    // Simulate network request delay
+    await Future.delayed(const Duration(seconds: 1));
+  }
 
   @override
   void dispose() {
@@ -77,19 +78,23 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: InstagramColors.foregroundColor,
-
-        // bottomNavigationBar: const NavBarScreen(),
-
-        body: SizedBox(
-          height: double.infinity,
+        body: RefreshIndicator(
+          onRefresh: _refreshFeed,
+          edgeOffset:
+              50, // This determines the point at which the refresh is triggered
+          displacement:
+              50, // This controls the distance of the progress indicator from the top
+          color: Colors.black,
+          strokeWidth: 2.0, // Thickness of the progress indicator
           child: CustomScrollView(
             controller: _scrollController,
+            physics: const BouncingScrollPhysics(), // Smooth scroll physics
             slivers: [
               ValueListenableBuilder<double>(
                 valueListenable: appBarOpacity,
                 builder: (context, opacity, child) {
                   return SliverAppBar(
-                    toolbarHeight: _appBarMaxHeight.h, // Adjust height here
+                    toolbarHeight: _appBarMaxHeight.h,
                     backgroundColor: InstagramColors.foregroundColor,
                     floating: true,
                     pinned: false,
@@ -101,77 +106,43 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
                         padding: const EdgeInsets.only(left: 10),
                         child: Row(
                           children: [
-                            GestureDetector(
-                              onTap: () async {
-                                await showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        title: const Text("log out"),
-                                        actions: [
-                                          CustomButton(
-                                            text: "Ok",
-                                            onTap: () {
-                                              context.read<AuthBloc>().add(
-                                                    const SignOutEvent(),
-                                                  );
-
-                                              Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const SplashScreen()),
-                                                (Route<dynamic> route) => false,
-                                              );
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    });
-                              },
-                              child: Row(
-                                children: [
-                                  Text(
-                                    "Instagram",
-                                    style: instagramHeading.copyWith(
-                                      fontSize: 35.sp,
-                                      color: Colors.black.withOpacity(opacity),
-                                    ),
-                                  ),
-                                  SizedBox(width: 5.w),
-                                  Padding(
-                                    padding: EdgeInsets.only(top: 3.h),
-                                    child: Icon(
-                                      PhosphorIconsRegular.caretDown,
-                                      size: 14.sp,
-                                      color: Colors.black.withOpacity(opacity),
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              "Instagram",
+                              style: instagramHeading.copyWith(
+                                fontSize: 35.sp,
+                                color: Colors.black.withOpacity(opacity),
                               ),
                             ),
-                            Expanded(
-                              child: SizedBox(
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Icon(
-                                      PhosphorIconsRegular.heart,
-                                      size: 24.sp,
-                                      color: Colors.black.withOpacity(opacity),
-                                    ),
-                                    SizedBox(
-                                      width: 10.w,
-                                    ),
-                                    Icon(
-                                      PhosphorIconsRegular.messengerLogo,
-                                      size: 24.sp,
-                                      color: Colors.black.withOpacity(opacity),
-                                    ),
-                                  ],
-                                ),
+                            SizedBox(width: 5.w),
+                            Padding(
+                              padding: EdgeInsets.only(top: 3.h),
+                              child: Icon(
+                                PhosphorIconsRegular.caretDown,
+                                size: 14.sp,
+                                color: Colors.black.withOpacity(opacity),
                               ),
-                            )
+                            ),
+                            Spacer(),
+                            Icon(
+                              PhosphorIconsRegular.heart,
+                              size: 24.sp,
+                              color: Colors.black.withOpacity(opacity),
+                            ),
+                            SizedBox(width: 10.w),
+                            IconButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ConversationView()),
+                                );
+                              },
+                              icon: Icon(
+                                PhosphorIconsRegular.messengerLogo,
+                                size: 24.sp,
+                                color: Colors.black.withOpacity(opacity),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -183,54 +154,60 @@ class _FeedPageScreenState extends State<FeedPageScreen> {
                 listener: (context, state) async {
                   if (state is FeedRetrivalFailureState) {
                     await showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text("log out"),
-                            actions: [
-                              CustomButton(
-                                text: "Ok",
-                                onTap: () {
-                                  context.read<AuthBloc>().add(
-                                        const SignOutEvent(),
-                                      );
-
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SplashScreen()),
-                                    (Route<dynamic> route) => false,
-                                  );
-                                },
-                              ),
-                            ],
-                          );
-                        });
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text("Log out"),
+                          actions: [
+                            CustomButton(
+                              text: "Ok",
+                              onTap: () {
+                                context
+                                    .read<AuthBloc>()
+                                    .add(const SignOutEvent());
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SplashScreen()),
+                                  (Route<dynamic> route) => false,
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
                   }
                 },
                 builder: (context, state) {
                   switch (state) {
                     case FeedLoadingState():
                       return SliverToBoxAdapter(
-                        child: SizedBox(
-                          height: 550.h,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: CircularProgressIndicator(),
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 550.h,
+                              child: const Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  // CircularProgressIndicator(),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       );
                     case FeedLoadedState():
-                      return PostList(
-                        postList: state.postList,
-                      );
+                      if (_catchedWidget == null) {
+                        _catchedWidget = PostList(postList: state.postList);
+                      } else {
+                        return PostList(postList: state.postList);
+                      }
+                      return _catchedWidget!;
                     default:
-                      return const SliverToBoxAdapter(child: SizedBox.shrink());
+                      return _catchedWidget ??
+                          SliverToBoxAdapter(child: SizedBox.shrink());
                   }
                 },
               ),

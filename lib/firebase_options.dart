@@ -41,48 +41,49 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDlIUr4CgN9sdLAYuTi9JdJidiMHCksbVU',
-    appId: '1:650386375386:web:db09b51f67a2f6a1a95be3',
-    messagingSenderId: '650386375386',
-    projectId: 'instagram-b3526',
-    authDomain: 'instagram-b3526.firebaseapp.com',
-    storageBucket: 'instagram-b3526.appspot.com',
-    measurementId: 'G-WPWNMZ9K93',
+    apiKey: 'AIzaSyDU6gUkjgudjYRYZkEOH-fTK28qCjSwCiE',
+    appId: '1:363932168351:web:723d2776f672b871c832aa',
+    messagingSenderId: '363932168351',
+    projectId: 'instagem-clone',
+    authDomain: 'instagem-clone.firebaseapp.com',
+    storageBucket: 'instagem-clone.appspot.com',
+    measurementId: 'G-S016LH5QXZ',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCzZmY43AUah39-Yq1ZfA_iQugBl4R3a6M',
-    appId: '1:650386375386:android:bec52c251b13a7bfa95be3',
-    messagingSenderId: '650386375386',
-    projectId: 'instagram-b3526',
-    storageBucket: 'instagram-b3526.appspot.com',
+    apiKey: 'AIzaSyCUA0HyK5-nCDcJOxwuCvqxoof72JGfYFw',
+    appId: '1:363932168351:android:45fb31a76024cd9ac832aa',
+    messagingSenderId: '363932168351',
+    projectId: 'instagem-clone',
+    storageBucket: 'instagem-clone.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBT_oM5pLT8JSYuxdKABluCMcNGzvHZ9gk',
-    appId: '1:650386375386:ios:55773ca1fda47249a95be3',
-    messagingSenderId: '650386375386',
-    projectId: 'instagram-b3526',
-    storageBucket: 'instagram-b3526.appspot.com',
+    apiKey: 'AIzaSyBzDKQxMr2kuwfQ38i33Sh1C5MAs8MNEzc',
+    appId: '1:363932168351:ios:cdd72590e6989efec832aa',
+    messagingSenderId: '363932168351',
+    projectId: 'instagem-clone',
+    storageBucket: 'instagem-clone.appspot.com',
     iosBundleId: 'com.example.loginTokenApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBT_oM5pLT8JSYuxdKABluCMcNGzvHZ9gk',
-    appId: '1:650386375386:ios:55773ca1fda47249a95be3',
-    messagingSenderId: '650386375386',
-    projectId: 'instagram-b3526',
-    storageBucket: 'instagram-b3526.appspot.com',
+    apiKey: 'AIzaSyBzDKQxMr2kuwfQ38i33Sh1C5MAs8MNEzc',
+    appId: '1:363932168351:ios:cdd72590e6989efec832aa',
+    messagingSenderId: '363932168351',
+    projectId: 'instagem-clone',
+    storageBucket: 'instagem-clone.appspot.com',
     iosBundleId: 'com.example.loginTokenApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDlIUr4CgN9sdLAYuTi9JdJidiMHCksbVU',
-    appId: '1:650386375386:web:a3b5998e6bc3ff69a95be3',
-    messagingSenderId: '650386375386',
-    projectId: 'instagram-b3526',
-    authDomain: 'instagram-b3526.firebaseapp.com',
-    storageBucket: 'instagram-b3526.appspot.com',
-    measurementId: 'G-VK45GLVNZK',
+    apiKey: 'AIzaSyDU6gUkjgudjYRYZkEOH-fTK28qCjSwCiE',
+    appId: '1:363932168351:web:50bee1edbb30ad04c832aa',
+    messagingSenderId: '363932168351',
+    projectId: 'instagem-clone',
+    authDomain: 'instagem-clone.firebaseapp.com',
+    storageBucket: 'instagem-clone.appspot.com',
+    measurementId: 'G-RK0Q85N8BK',
   );
+
 }

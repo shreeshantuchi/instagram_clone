@@ -1,5 +1,6 @@
 import 'package:login_token_app/features/authentication/data/models/auth_token_model.dart';
 import 'package:login_token_app/features/authentication/domain/enitites/user_entity.dart';
+import 'package:login_token_app/features/userManagement/domain/entity/profile_entity.dart';
 import 'package:login_token_app/features/authentication/domain/repository/auth_repository.dart';
 
 class FirebaseLoginUseCase {

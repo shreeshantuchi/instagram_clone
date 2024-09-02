@@ -94,7 +94,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: const ForgotPasswrod(),
               ),
               CustomButton(
-                color: InstagramColors.buttonColor,
+                backgroundColor: InstagramColors.buttonColor,
                 onTap: () {
                   context.read<AuthBloc>().add(
                         LoginEvent(
@@ -113,17 +113,11 @@ class _LoginFormState extends State<LoginForm> {
                       .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const SignupView()));
-                },
-                child: Text(
-                  "Log in with Facebook",
-                  style: instagramTextTheme.bodySmall!.copyWith(
-                      color: InstagramColors.buttonColor,
-                      fontWeight: FontWeight.bold),
-                ),
+              Text(
+                "Log in with Facebook",
+                style: instagramTextTheme.bodySmall!.copyWith(
+                    color: InstagramColors.buttonColor,
+                    fontWeight: FontWeight.bold),
               ),
               const Spacer(),
               const SignInText(),

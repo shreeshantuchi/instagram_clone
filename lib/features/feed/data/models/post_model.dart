@@ -8,6 +8,7 @@ class PostModel extends Post {
     required super.userId,
     required super.username,
     required super.postUrl,
+    required super.timestamp,
   }) : super(description: postCaption);
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +19,7 @@ class PostModel extends Post {
       userId: json['userId'],
       username: json['username'],
       postUrl: List<String>.from(json['postUrl']),
+      timestamp: json["timestamp"],
     );
   }
 
@@ -29,6 +31,7 @@ class PostModel extends Post {
       'userId': userId,
       'username': username,
       'postUrl': postUrl,
+      'timestamp': timestamp
     };
   }
 }

@@ -48,6 +48,15 @@ dependencies:
   cloud_firestore: ^4.14.0
 
   firebase_auth: ^4.16.0
+  firebase_storage: ^11.6.0
+  image_picker: ^1.1.2
+  shimmer: ^3.0.0
+  permission_handler: ^11.3.1
+  intl: ^0.19.0
+  insta_assets_picker: ^2.3.1
+  provider: ^6.1.2
+  mime: ^1.0.5
+  cached_network_image: ^3.4.1
 
 dev_dependencies:
   flutter_test:

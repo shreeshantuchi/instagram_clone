@@ -8,14 +8,13 @@ import 'package:login_token_app/features/authentication/presentation/bloc/auth_s
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   //final LoginUseCase loginUseCase;
   final FirebaseLoginUseCase loginUseCase;
-  final FirebaseCurrentUserUseCase getCurrentUserUseCase;
   final FirebaseSignOutUseCase signOutUseCase;
   final FirebaseSignUpUseCase signUpUseCase;
-
+  final FirebaseCurrentUserUseCase getCurrentUserUsecase;
   AuthBloc({
+    required this.getCurrentUserUsecase,
     required this.signUpUseCase,
     required this.loginUseCase,
-    required this.getCurrentUserUseCase,
     required this.signOutUseCase,
   }) : super(const OnAuthInitialState()) {
     on<LoginEvent>(
@@ -38,8 +37,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(const OnAuthLoadingState());
           //final user = await loginUseCase.call(event.data);
           final user = await signUpUseCase.call(event.email, event.password);
-          print("user:::::::::: $user");
-          emit(OnAppStartLogInAuthenticatedState(userSuccess: user));
+          //print("user:::::::::: $user");
+          emit(OnSignUpSuccessState(user));
         } catch (e) {
           emit(const OnLoginFailureState(error: "Unable to Login"));
         }
@@ -48,7 +47,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<AppStartEvent>((event, emit) async {
       try {
-        final user = getCurrentUserUseCase.call();
+        final user = getCurrentUserUsecase.call();
 
         emit(OnAppStartLogInAuthenticatedState(userSuccess: user));
       } catch (e) {
